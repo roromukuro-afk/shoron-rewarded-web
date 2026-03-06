@@ -2,15 +2,11 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { supabaseBrowser } from "../lib/supabase-browser";
 
 type BillingPlan = "none" | "basic" | "plus" | "unknown";
 
 export default function DashboardPage() {
-  const searchParams = useSearchParams();
-  const billingParam = searchParams.get("billing"); // success / cancel
-
   const [userEmail, setUserEmail] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
 
@@ -238,33 +234,33 @@ export default function DashboardPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 購入直後バナー
+  // ✅ useSearchParams を使わず、ブラウザで query を読む（プリレンダーで落ちない）
   useEffect(() => {
-    if (billingParam === "success") {
-      setPurchaseBanner("✅ 購入ありがとうございます！Proチケットが反映されるまで数秒かかることがあります。必要なら「更新」を押してね。");
+    if (typeof window === "undefined") return;
 
-      // 購入直後は自動で再読み込み（軽く）
+    const sp = new URLSearchParams(window.location.search);
+    const billing = sp.get("billing"); // success / cancel
+
+    if (billing === "success") {
+      setPurchaseBanner("✅ 購入ありがとうございます！Proチケットが反映されるまで数秒かかることがあります。必要なら「更新」を押してね。");
       (async () => {
         await loadBilling();
         await loadBalance();
       })();
-
-      // URLの ?billing=success を消して、リロード時にまた出ないようにする
-      try {
-        const url = new URL(window.location.href);
-        url.searchParams.delete("billing");
-        window.history.replaceState({}, "", url.toString());
-      } catch {}
-    } else if (billingParam === "cancel") {
+    } else if (billing === "cancel") {
       setPurchaseBanner("⚠️ 購入がキャンセルされました。必要ならもう一度お試しください。");
-      try {
-        const url = new URL(window.location.href);
-        url.searchParams.delete("billing");
-        window.history.replaceState({}, "", url.toString());
-      } catch {}
+    } else {
+      return;
     }
+
+    // URLから billing を消す
+    try {
+      sp.delete("billing");
+      const newUrl = `${window.location.pathname}${sp.toString() ? `?${sp.toString()}` : ""}`;
+      window.history.replaceState({}, "", newUrl);
+    } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [billingParam]);
+  }, []);
 
   return (
     <main style={{ padding: 24, maxWidth: 1050 }}>
