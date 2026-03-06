@@ -90,8 +90,15 @@ export default function HomePage() {
           <Link href="/dashboard">/dashboard</Link>
           <Link href="/billing">/billing</Link>
           <Link href="/rewarded">/rewarded</Link>
+          <Link href="/privacy">/privacy</Link>
         </div>
       </section>
+
+      <hr style={{ margin: "24px 0" }} />
+
+      <footer style={{ fontSize: 14, opacity: 0.8 }}>
+        <Link href="/privacy">プライバシーポリシー</Link>
+      </footer>
     </main>
   );
 }
