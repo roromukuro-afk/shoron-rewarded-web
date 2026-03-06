@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { supabaseBrowser } from "../../lib/supabase-browser";
+import AdSenseUnit from "../../components/AdSenseUnit";
 
 function sumBreakdown(b: any) {
   if (!b) return 0;
@@ -59,7 +60,7 @@ export default function ResultPage() {
 
   const grading = data?.grading;
   const rj = grading?.result_json ?? {};
-  const plan = (rj?._plan ?? "free") as string; // pro / free（未設定はfree）
+  const plan = (rj?._plan ?? "free") as string;
   const isFreeResult = plan !== "pro";
 
   const breakdown = rj.breakdown ?? null;
@@ -182,6 +183,13 @@ export default function ResultPage() {
           </div>
 
           {regradeMsg && <pre style={{ marginTop: 10, whiteSpace: "pre-wrap" }}>{regradeMsg}</pre>}
+
+          {/* ✅ Free結果ページに広告枠を表示（審査通過後、slot差し替え） */}
+          <AdSenseUnit
+            client="ca-pub-5148247638505100"
+            slot="1234567890"
+            format="auto"
+          />
         </div>
       )}
 
