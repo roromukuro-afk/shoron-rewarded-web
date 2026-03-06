@@ -92,6 +92,7 @@ export default function HomePage() {
           <Link href="/rewarded">/rewarded</Link>
           <Link href="/privacy">/privacy</Link>
           <Link href="/terms">/terms</Link>
+          <Link href="/commerce">/commerce</Link>
         </div>
       </section>
 
@@ -100,6 +101,7 @@ export default function HomePage() {
       <footer style={{ fontSize: 14, opacity: 0.8, display: "flex", gap: 16, flexWrap: "wrap" }}>
         <Link href="/privacy">プライバシーポリシー</Link>
         <Link href="/terms">利用規約</Link>
+        <Link href="/commerce">特定商取引法に基づく表記</Link>
       </footer>
     </main>
   );
