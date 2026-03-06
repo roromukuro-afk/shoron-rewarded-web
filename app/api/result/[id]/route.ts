@@ -1,4 +1,3 @@
-// app/api/result/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "../../_supabase";
 
@@ -16,14 +15,16 @@ async function getAuthUserId(req: NextRequest): Promise<string | null> {
   return data.user.id;
 }
 
-async function resolveUserId(req: NextRequest): Promise<{ userId: string | null; mode: "auth" | "linked" | "anon" | "none" }> {
+async function resolveUserId(req: NextRequest): Promise<{
+  userId: string | null;
+  mode: "auth" | "linked" | "anon" | "none";
+}> {
   const authUserId = await getAuthUserId(req);
   if (authUserId) return { userId: authUserId, mode: "auth" };
 
   const anonId = req.cookies.get("anon_id")?.value ?? "";
   if (!anonId || !isUuid(anonId)) return { userId: null, mode: "none" };
 
-  // スマホ連動（device_links）があるなら、そっちを優先
   const { data: linkRow } = await supabaseAdmin
     .from("device_links")
     .select("user_id")
@@ -37,10 +38,7 @@ async function resolveUserId(req: NextRequest): Promise<{ userId: string | null;
   return { userId: anonId, mode: "anon" };
 }
 
-/**
- * ✅ Next.js 16 の型: context.params が Promise になっているため、
- * 第2引数は { params: Promise<{id:string}> } にする必要がある
- */
+// ✅ Next.js 16: context.params が Promise 型
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -52,13 +50,11 @@ export async function GET(
 
   const { id } = await context.params;
 
-  // essayId は数値前提（/result/20 みたいな運用）
   const essayId = Number(id);
   if (!Number.isFinite(essayId) || essayId <= 0) {
     return NextResponse.json({ ok: false, error: "invalid_id" }, { status: 400 });
   }
 
-  // 本人のessayのみ取得
   const { data: essay, error: e1 } = await supabaseAdmin
     .from("essays")
     .select("id,user_id,question,constraints,essay_text,char_count,created_at,request_id")
@@ -69,7 +65,6 @@ export async function GET(
   if (e1) return NextResponse.json({ ok: false, error: "db_error", detail: e1.message }, { status: 500 });
   if (!essay) return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
 
-  // 最新の採点結果（あれば）
   const { data: grading, error: e2 } = await supabaseAdmin
     .from("grading_results")
     .select("id,essay_id,score,result_json,created_at")
