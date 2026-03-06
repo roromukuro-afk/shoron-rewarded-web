@@ -93,6 +93,7 @@ export default function HomePage() {
           <Link href="/privacy">/privacy</Link>
           <Link href="/terms">/terms</Link>
           <Link href="/commerce">/commerce</Link>
+          <Link href="/contact">/contact</Link>
         </div>
       </section>
 
@@ -102,6 +103,7 @@ export default function HomePage() {
         <Link href="/privacy">プライバシーポリシー</Link>
         <Link href="/terms">利用規約</Link>
         <Link href="/commerce">特定商取引法に基づく表記</Link>
+        <Link href="/contact">お問い合わせ</Link>
       </footer>
     </main>
   );
