@@ -27,6 +27,39 @@ async function markEventProcessed(eventId: string) {
   throw new Error(error.message);
 }
 
+// Stripeの型差異に強い price_id 抽出（anyで扱う）
+function extractPriceIdFromInvoice(invoice: Stripe.Invoice): string | null {
+  const invAny: any = invoice;
+
+  // 1) lines.data[].price.id（新しめ）
+  const data1 = invAny?.lines?.data;
+  if (Array.isArray(data1)) {
+    for (const l of data1) {
+      const pid = l?.price?.id;
+      if (typeof pid === "string" && pid.length > 0) return pid;
+    }
+  }
+
+  // 2) lines.data[].plan.id（古め）
+  if (Array.isArray(data1)) {
+    for (const l of data1) {
+      const pid = l?.plan?.id;
+      if (typeof pid === "string" && pid.length > 0) return pid;
+    }
+  }
+
+  // 3) invoice.items.data[].price.id（環境によってはこっち）
+  const data2 = invAny?.items?.data;
+  if (Array.isArray(data2)) {
+    for (const l of data2) {
+      const pid = l?.price?.id;
+      if (typeof pid === "string" && pid.length > 0) return pid;
+    }
+  }
+
+  return null;
+}
+
 export async function POST(req: NextRequest) {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   const sig = req.headers.get("stripe-signature");
@@ -43,7 +76,10 @@ export async function POST(req: NextRequest) {
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
   } catch (e: any) {
-    return NextResponse.json({ ok: false, error: "signature_verification_failed", detail: e?.message ?? "unknown" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: "signature_verification_failed", detail: e?.message ?? "unknown" },
+      { status: 400 }
+    );
   }
 
   const firstTime = await markEventProcessed(event.id);
@@ -52,7 +88,10 @@ export async function POST(req: NextRequest) {
   if (event.type === "invoice.payment_succeeded") {
     const invoice = event.data.object as Stripe.Invoice;
 
-    const customerId = typeof invoice.customer === "string" ? invoice.customer : invoice.customer?.id;
+    const invAny: any = invoice;
+    const customerId =
+      typeof invAny.customer === "string" ? invAny.customer : invAny.customer?.id;
+
     if (!customerId) return NextResponse.json({ ok: true, ignored: "no_customer" });
 
     const { data: custRow, error: e1 } = await supabaseAdmin
@@ -66,8 +105,7 @@ export async function POST(req: NextRequest) {
 
     const userId = custRow.user_id as string;
 
-    const line = invoice.lines?.data?.find((l) => (l.price as any)?.id);
-    const priceId = (line?.price as any)?.id as string | undefined;
+    const priceId = extractPriceIdFromInvoice(invoice);
     if (!priceId) return NextResponse.json({ ok: true, ignored: "no_price_id" });
 
     const basic = process.env.STRIPE_PRICE_BASIC!;
