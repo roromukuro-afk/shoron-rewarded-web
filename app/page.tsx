@@ -91,13 +91,15 @@ export default function HomePage() {
           <Link href="/billing">/billing</Link>
           <Link href="/rewarded">/rewarded</Link>
           <Link href="/privacy">/privacy</Link>
+          <Link href="/terms">/terms</Link>
         </div>
       </section>
 
       <hr style={{ margin: "24px 0" }} />
 
-      <footer style={{ fontSize: 14, opacity: 0.8 }}>
+      <footer style={{ fontSize: 14, opacity: 0.8, display: "flex", gap: 16, flexWrap: "wrap" }}>
         <Link href="/privacy">プライバシーポリシー</Link>
+        <Link href="/terms">利用規約</Link>
       </footer>
     </main>
   );
