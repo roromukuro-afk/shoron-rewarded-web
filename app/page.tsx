@@ -1,65 +1,97 @@
-import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
+      <section style={{ padding: "40px 0 24px" }}>
+        <h1 style={{ fontSize: 36, fontWeight: 900, lineHeight: 1.3 }}>
+          AI小論文添削サービス
+        </h1>
+
+        <p style={{ marginTop: 14, fontSize: 16, lineHeight: 1.8 }}>
+          小論文を投稿すると、AIが点数・要約・良い点・改善点を返します。
+          無料で試せて、必要ならPro再採点やチケット購入もできます。
+        </p>
+
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 20 }}>
+          <Link
+            href="/submit"
+            style={{
+              padding: "12px 16px",
+              borderRadius: 10,
+              border: "1px solid #ccc",
+              fontWeight: 900,
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            小論文を投稿する
+          </Link>
+
+          <Link
+            href="/login"
+            style={{
+              padding: "12px 16px",
+              borderRadius: 10,
+              border: "1px solid #ccc",
+              fontWeight: 900,
+            }}
           >
-            Documentation
-          </a>
+            ログイン
+          </Link>
+
+          <Link
+            href="/billing"
+            style={{
+              padding: "12px 16px",
+              borderRadius: 10,
+              border: "1px solid #ccc",
+              fontWeight: 900,
+            }}
+          >
+            プランを見る
+          </Link>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <hr style={{ margin: "24px 0" }} />
+
+      <section>
+        <h2 style={{ fontSize: 24, fontWeight: 900 }}>できること</h2>
+
+        <div style={{ display: "grid", gap: 14, marginTop: 16 }}>
+          <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
+            <div style={{ fontWeight: 900 }}>無料採点</div>
+            <p style={{ marginTop: 8, lineHeight: 1.7 }}>
+              まずは無料で投稿して、点数・要約・改善点を確認できます。
+            </p>
+          </div>
+
+          <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
+            <div style={{ fontWeight: 900 }}>Pro再採点</div>
+            <p style={{ marginTop: 8, lineHeight: 1.7 }}>
+              より厳密な基準で再採点し、根拠や改善方針を詳しく確認できます。
+            </p>
+          </div>
+
+          <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
+            <div style={{ fontWeight: 900 }}>チケット制</div>
+            <p style={{ marginTop: 8, lineHeight: 1.7 }}>
+              必要な分だけ使えて、継続利用向けのプランも選べます。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <hr style={{ margin: "24px 0" }} />
+
+      <section>
+        <h2 style={{ fontSize: 24, fontWeight: 900 }}>主なページ</h2>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 16 }}>
+          <Link href="/submit">/submit</Link>
+          <Link href="/dashboard">/dashboard</Link>
+          <Link href="/billing">/billing</Link>
+          <Link href="/rewarded">/rewarded</Link>
+        </div>
+      </section>
+    </main>
   );
 }
