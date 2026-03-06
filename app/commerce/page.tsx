@@ -29,7 +29,7 @@ export default function CommercePage() {
 
       <section style={{ marginTop: 24 }}>
         <h2 style={{ fontSize: 22, fontWeight: 900 }}>メールアドレス</h2>
-        <p style={{ marginTop: 8 }}>お問い合わせ先メールアドレス</p>
+        <p style={{ marginTop: 8 }}>sato.learning@gmail.com</p>
       </section>
 
       <section style={{ marginTop: 24 }}>

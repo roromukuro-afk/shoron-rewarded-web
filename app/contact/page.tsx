@@ -10,7 +10,7 @@ export default function ContactPage() {
       <section style={{ marginTop: 24 }}>
         <h2 style={{ fontSize: 22, fontWeight: 900 }}>お問い合わせ先</h2>
         <p style={{ marginTop: 8 }}>
-          メールアドレス：お問い合わせ用メールアドレス
+          メールアドレス：sato.learning@gmail.com
         </p>
       </section>
 
