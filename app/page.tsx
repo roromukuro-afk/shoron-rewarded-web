@@ -2,18 +2,22 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <main style={{ maxWidth: 900, margin: "0 auto", padding: 24 }}>
+    <main style={{ maxWidth: 960, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
       <section style={{ padding: "40px 0 24px" }}>
-        <h1 style={{ fontSize: 36, fontWeight: 900, lineHeight: 1.3 }}>
+        <h1 style={{ fontSize: 38, fontWeight: 900, lineHeight: 1.3 }}>
           AI小論文添削サービス
         </h1>
 
-        <p style={{ marginTop: 14, fontSize: 16, lineHeight: 1.8 }}>
-          小論文を投稿すると、AIが点数・要約・良い点・改善点を返します。
-          無料で試せて、必要ならPro再採点やチケット購入もできます。
+        <p style={{ marginTop: 16, fontSize: 17 }}>
+          本サービスは、小論文の下書きや答案を投稿すると、
+          AIが点数・要約・良い点・改善点を返すオンライン添削サービスです。
         </p>
 
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 20 }}>
+        <p style={{ marginTop: 12, fontSize: 16 }}>
+          無料で試せる採点機能に加えて、より厳密なPro再採点やチケット購入にも対応しています。
+        </p>
+
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 22 }}>
           <Link
             href="/submit"
             style={{
@@ -47,41 +51,55 @@ export default function HomePage() {
               fontWeight: 900,
             }}
           >
-            プランを見る
+            料金プランを見る
           </Link>
         </div>
       </section>
 
-      <hr style={{ margin: "24px 0" }} />
+      <hr style={{ margin: "28px 0" }} />
 
       <section>
-        <h2 style={{ fontSize: 24, fontWeight: 900 }}>できること</h2>
+        <h2 style={{ fontSize: 24, fontWeight: 900 }}>このサービスでできること</h2>
 
         <div style={{ display: "grid", gap: 14, marginTop: 16 }}>
           <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
-            <div style={{ fontWeight: 900 }}>無料採点</div>
-            <p style={{ marginTop: 8, lineHeight: 1.7 }}>
-              まずは無料で投稿して、点数・要約・改善点を確認できます。
+            <div style={{ fontWeight: 900 }}>1. 無料で採点結果を確認</div>
+            <p style={{ marginTop: 8 }}>
+              小論文を投稿すると、AIが点数・要約・改善点を返します。
+              まずは無料で試して、現状の課題を把握できます。
             </p>
           </div>
 
           <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
-            <div style={{ fontWeight: 900 }}>Pro再採点</div>
-            <p style={{ marginTop: 8, lineHeight: 1.7 }}>
-              より厳密な基準で再採点し、根拠や改善方針を詳しく確認できます。
+            <div style={{ fontWeight: 900 }}>2. Pro再採点で詳しく確認</div>
+            <p style={{ marginTop: 8 }}>
+              Proチケットを使うと、より厳密な観点で再採点し、改善の方向性を詳しく確認できます。
             </p>
           </div>
 
           <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
-            <div style={{ fontWeight: 900 }}>チケット制</div>
-            <p style={{ marginTop: 8, lineHeight: 1.7 }}>
-              必要な分だけ使えて、継続利用向けのプランも選べます。
+            <div style={{ fontWeight: 900 }}>3. 継続学習に使える</div>
+            <p style={{ marginTop: 8 }}>
+              投稿履歴やチケット機能を使いながら、継続的に小論文の練習を進められます。
             </p>
           </div>
         </div>
       </section>
 
-      <hr style={{ margin: "24px 0" }} />
+      <hr style={{ margin: "28px 0" }} />
+
+      <section>
+        <h2 style={{ fontSize: 24, fontWeight: 900 }}>料金について</h2>
+        <p style={{ marginTop: 12 }}>
+          本サービスには、無料で使える機能と、有料のチケット・プランがあります。
+          詳細は料金ページで確認できます。
+        </p>
+        <div style={{ marginTop: 12 }}>
+          <Link href="/billing">→ /billing</Link>
+        </div>
+      </section>
+
+      <hr style={{ margin: "28px 0" }} />
 
       <section>
         <h2 style={{ fontSize: 24, fontWeight: 900 }}>主なページ</h2>
@@ -97,9 +115,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <hr style={{ margin: "24px 0" }} />
+      <hr style={{ margin: "28px 0" }} />
 
-      <footer style={{ fontSize: 14, opacity: 0.8, display: "flex", gap: 16, flexWrap: "wrap" }}>
+      <footer style={{ fontSize: 14, opacity: 0.85, display: "flex", gap: 16, flexWrap: "wrap" }}>
         <Link href="/privacy">プライバシーポリシー</Link>
         <Link href="/terms">利用規約</Link>
         <Link href="/commerce">特定商取引法に基づく表記</Link>
