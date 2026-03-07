@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function TermsPage() {
   return (
     <main style={{ maxWidth: 900, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
@@ -76,6 +78,15 @@ export default function TermsPage() {
           本規約は日本法に準拠し、本サービスに関して紛争が生じた場合は、日本国内の裁判所を第一審の専属的合意管轄とします。
         </p>
       </section>
+
+      <hr style={{ margin: "24px 0" }} />
+
+      <footer style={{ fontSize: 14, opacity: 0.85, display: "flex", gap: 16, flexWrap: "wrap" }}>
+        <Link href="/">トップへ戻る</Link>
+        <Link href="/privacy">プライバシーポリシー</Link>
+        <Link href="/commerce">特定商取引法に基づく表記</Link>
+        <Link href="/contact">お問い合わせ</Link>
+      </footer>
     </main>
   );
 }
