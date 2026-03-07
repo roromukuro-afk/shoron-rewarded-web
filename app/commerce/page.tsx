@@ -5,12 +5,12 @@ export default function CommercePage() {
 
       <section style={{ marginTop: 24 }}>
         <h2 style={{ fontSize: 22, fontWeight: 900 }}>販売事業者</h2>
-        <p style={{ marginTop: 8 }}>当サービス運営者</p>
+        <p style={{ marginTop: 8 }}>佐藤 慶音</p>
       </section>
 
       <section style={{ marginTop: 24 }}>
         <h2 style={{ fontSize: 22, fontWeight: 900 }}>運営責任者</h2>
-        <p style={{ marginTop: 8 }}>運営者名</p>
+        <p style={{ marginTop: 8 }}>佐藤 慶音</p>
       </section>
 
       <section style={{ marginTop: 24 }}>
