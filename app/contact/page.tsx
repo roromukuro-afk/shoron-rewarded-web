@@ -8,6 +8,11 @@ export default function ContactPage() {
       </p>
 
       <section style={{ marginTop: 24 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 900 }}>運営者</h2>
+        <p style={{ marginTop: 8 }}>佐藤 慶音</p>
+      </section>
+
+      <section style={{ marginTop: 24 }}>
         <h2 style={{ fontSize: 22, fontWeight: 900 }}>お問い合わせ先</h2>
         <p style={{ marginTop: 8 }}>
           メールアドレス：sato.learning@gmail.com
