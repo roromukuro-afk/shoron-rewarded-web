@@ -1,145 +1,169 @@
-// app/submit/page.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "../lib/supabase-browser";
 
-function randomId() {
-  // ブラウザ用簡易ID（十分）
-  return Math.random().toString(36).slice(2) + "-" + Date.now().toString(36);
-}
-
 export default function SubmitPage() {
-  const [question, setQuestion] = useState("あなたの意見を述べよ。");
-  const [constraints, setConstraints] = useState("400字程度");
-  const [essay, setEssay] = useState("");
-  const [plan, setPlan] = useState<"free" | "pro">("free");
+  const router = useRouter();
+
+  const [question, setQuestion] = useState("AIの活用は今後の学習に必要である。あなたの考えを述べなさい。");
+  const [constraints, setConstraints] = useState("200〜400字程度で、自分の立場と理由を明確に述べること。");
+  const [essayText, setEssayText] = useState("");
   const [msg, setMsg] = useState("");
 
-  const charCount = essay.length;
-
-  const units = useMemo(() => Math.max(1, Math.ceil(charCount / 400)), [charCount]);
-  const cost = useMemo(() => (plan === "free" ? units * 1 : units * 2), [plan, units]);
-  const ticketType = plan;
-
-  const submit = async () => {
+  const onSubmit = async () => {
     setMsg("送信中…");
 
     try {
       const { data } = await supabaseBrowser.auth.getSession();
       const token = data.session?.access_token;
 
-      const request_id = randomId();
-
       const res = await fetch("/api/submit", {
         method: "POST",
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
+        credentials: "include",
         body: JSON.stringify({
           question,
           constraints,
-          essay_text: essay,
-          plan,
-          request_id,
+          essayText,
+          essay_text: essayText,
+          text: essayText,
+          body: essayText,
         }),
       });
 
       const out = await res.json();
 
-      if (res.ok) {
-        setMsg("✅ 送信完了！結果ページへ移動します…");
-        window.location.href = `/result/${out.essayId}`;
+      if (!res.ok) {
+        setMsg(`❌ 送信失敗：${out?.detail ?? out?.error ?? res.status}`);
         return;
       }
 
-      if (out?.error === "insufficient_tickets") {
-        setMsg(
-          `❌ チケット不足（${out.ticketType}）\n残高=${out.balance} / 必要=${out.cost} / 足りない=${out.needed}\n` +
-            `広告で貯める or サブスクで補充してね。`
-        );
+      const resultId = out?.resultId ?? out?.essayId ?? out?.id ?? out?.essay?.id;
+      if (resultId) {
+        setMsg("✅ 送信完了。結果ページへ移動します…");
+        router.push(`/result/${resultId}`);
         return;
       }
 
-      setMsg(`❌ 失敗：${out?.detail ?? out?.error ?? res.status}`);
+      setMsg("✅ 送信は完了しましたが、結果IDが見つかりませんでした。ダッシュボードから確認してください。");
     } catch (e: any) {
       setMsg(`❌ 通信エラー：${e?.message ?? "unknown"}`);
     }
   };
 
   return (
-    <main style={{ padding: 24, maxWidth: 820 }}>
-      <h1 style={{ fontSize: 24, fontWeight: 800 }}>小論文を投稿</h1>
+    <main style={{ maxWidth: 960, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
+      <h1 style={{ fontSize: 32, fontWeight: 900 }}>小論文を投稿する</h1>
 
-      <p style={{ marginTop: 10 }}>
-        文字数：<b>{charCount}</b> / 必要チケット：<b>{cost}</b>（{ticketType}）
+      <p style={{ marginTop: 16 }}>
+        このページでは、小論文の下書きや答案を投稿して、AIによる採点・要約・改善点のフィードバックを受けられます。
       </p>
 
-      <div style={{ marginTop: 12, display: "flex", gap: 12, flexWrap: "wrap" }}>
-        <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          <input type="radio" checked={plan === "free"} onChange={() => setPlan("free")} />
-          Free（軽量）
-        </label>
-        <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          <input type="radio" checked={plan === "pro"} onChange={() => setPlan("pro")} />
-          Pro（厳密）
-        </label>
-        <span style={{ opacity: 0.7 }}>※今は採点はダミー。後でAIに差し替え。</span>
-      </div>
+      <p style={{ marginTop: 10 }}>
+        まずは無料で投稿でき、必要に応じてPro再採点や有料プランも利用できます。
+      </p>
 
-      <div style={{ marginTop: 14 }}>
-        <div style={{ fontWeight: 700 }}>設問</div>
-        <textarea
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          rows={2}
-          style={{ width: "100%", padding: 12, border: "1px solid #ccc", borderRadius: 10 }}
-        />
-      </div>
+      <hr style={{ margin: "24px 0" }} />
 
-      <div style={{ marginTop: 14 }}>
-        <div style={{ fontWeight: 700 }}>条件（字数など）</div>
-        <input
-          value={constraints}
-          onChange={(e) => setConstraints(e.target.value)}
-          style={{ width: "100%", padding: 12, border: "1px solid #ccc", borderRadius: 10 }}
-        />
-      </div>
+      <section>
+        <h2 style={{ fontSize: 24, fontWeight: 900 }}>入力内容</h2>
 
-      <div style={{ marginTop: 14 }}>
-        <div style={{ fontWeight: 700 }}>本文</div>
-        <textarea
-          value={essay}
-          onChange={(e) => setEssay(e.target.value)}
-          rows={14}
-          style={{ width: "100%", padding: 12, border: "1px solid #ccc", borderRadius: 10 }}
-          placeholder="ここに小論文を貼り付け"
-        />
-      </div>
+        <div style={{ display: "grid", gap: 16, marginTop: 16 }}>
+          <label>
+            <div style={{ fontWeight: 900 }}>設問</div>
+            <textarea
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              rows={4}
+              style={{
+                width: "100%",
+                marginTop: 8,
+                padding: 12,
+                borderRadius: 10,
+                border: "1px solid #ccc",
+              }}
+            />
+          </label>
 
-      <div style={{ marginTop: 14, display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <label>
+            <div style={{ fontWeight: 900 }}>条件</div>
+            <textarea
+              value={constraints}
+              onChange={(e) => setConstraints(e.target.value)}
+              rows={3}
+              style={{
+                width: "100%",
+                marginTop: 8,
+                padding: 12,
+                borderRadius: 10,
+                border: "1px solid #ccc",
+              }}
+            />
+          </label>
+
+          <label>
+            <div style={{ fontWeight: 900 }}>本文</div>
+            <textarea
+              value={essayText}
+              onChange={(e) => setEssayText(e.target.value)}
+              rows={14}
+              placeholder="ここに小論文本文を入力してください。"
+              style={{
+                width: "100%",
+                marginTop: 8,
+                padding: 12,
+                borderRadius: 10,
+                border: "1px solid #ccc",
+              }}
+            />
+          </label>
+        </div>
+      </section>
+
+      <hr style={{ margin: "24px 0" }} />
+
+      <section>
+        <h2 style={{ fontSize: 24, fontWeight: 900 }}>利用の流れ</h2>
+        <ol style={{ marginTop: 12, paddingLeft: 20 }}>
+          <li>設問・条件・本文を入力する</li>
+          <li>送信してAI採点結果を確認する</li>
+          <li>必要ならPro再採点や有料プランを利用する</li>
+        </ol>
+      </section>
+
+      <div style={{ marginTop: 24, display: "flex", gap: 12, flexWrap: "wrap" }}>
         <button
-          onClick={submit}
-          disabled={!essay.trim()}
+          onClick={onSubmit}
           style={{
             padding: "12px 16px",
             borderRadius: 10,
             border: "1px solid #ccc",
-            cursor: essay.trim() ? "pointer" : "not-allowed",
-            fontWeight: 800,
-            opacity: essay.trim() ? 1 : 0.5,
+            fontWeight: 900,
+            cursor: "pointer",
           }}
         >
-          投稿して採点（ダミー）
+          この内容で送信する
         </button>
 
         <Link href="/dashboard">→ ダッシュボードへ</Link>
       </div>
 
-      {msg && <pre style={{ marginTop: 12, whiteSpace: "pre-wrap" }}>{msg}</pre>}
+      {msg && <pre style={{ marginTop: 16, whiteSpace: "pre-wrap" }}>{msg}</pre>}
+
+      <hr style={{ margin: "24px 0" }} />
+
+      <footer style={{ fontSize: 14, opacity: 0.85, display: "flex", gap: 16, flexWrap: "wrap" }}>
+        <Link href="/privacy">プライバシーポリシー</Link>
+        <Link href="/terms">利用規約</Link>
+        <Link href="/commerce">特定商取引法に基づく表記</Link>
+        <Link href="/contact">お問い合わせ</Link>
+      </footer>
     </main>
   );
 }
