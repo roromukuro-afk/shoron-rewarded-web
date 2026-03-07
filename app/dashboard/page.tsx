@@ -16,25 +16,20 @@ export default function DashboardPage() {
 
   const [msg, setMsg] = useState<string>("");
 
-  // スマホ連動
   const [pairCode, setPairCode] = useState<string>("");
   const [pairExp, setPairExp] = useState<string>("");
 
-  // 履歴
   const [items, setItems] = useState<any[]>([]);
 
-  // 管理者付与（暫定）
   const [adminSecret, setAdminSecret] = useState<string>("");
   const [grantAmount, setGrantAmount] = useState<string>("40");
   const [grantMsg, setGrantMsg] = useState<string>("");
 
-  // 契約表示
   const [billingPlan, setBillingPlan] = useState<BillingPlan>("none");
   const [billingStatus, setBillingStatus] = useState<string>("(未取得)");
   const [billingPeriodEnd, setBillingPeriodEnd] = useState<string>("");
   const [billingMsg, setBillingMsg] = useState<string>("");
 
-  // 購入直後メッセージ
   const [purchaseBanner, setPurchaseBanner] = useState<string>("");
 
   const refreshUser = async () => {
@@ -228,18 +223,16 @@ export default function DashboardPage() {
       ? "Unknown（設定外）"
       : "未契約";
 
-  // 初回ロード
   useEffect(() => {
     loadAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ✅ useSearchParams を使わず、ブラウザで query を読む（プリレンダーで落ちない）
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const sp = new URLSearchParams(window.location.search);
-    const billing = sp.get("billing"); // success / cancel
+    const billing = sp.get("billing");
 
     if (billing === "success") {
       setPurchaseBanner("✅ 購入ありがとうございます！Proチケットが反映されるまで数秒かかることがあります。必要なら「更新」を押してね。");
@@ -253,7 +246,6 @@ export default function DashboardPage() {
       return;
     }
 
-    // URLから billing を消す
     try {
       sp.delete("billing");
       const newUrl = `${window.location.pathname}${sp.toString() ? `?${sp.toString()}` : ""}`;
@@ -263,7 +255,7 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <main style={{ padding: 24, maxWidth: 1050 }}>
+    <main style={{ padding: 24, maxWidth: 1050, lineHeight: 1.8 }}>
       <h1 style={{ fontSize: 24, fontWeight: 900 }}>ダッシュボード</h1>
 
       {purchaseBanner && (
@@ -378,7 +370,7 @@ export default function DashboardPage() {
       <hr style={{ margin: "18px 0" }} />
 
       <h2 style={{ fontSize: 18, fontWeight: 900 }}>スマホ連動（メール不要）</h2>
-      <p style={{ marginTop: 6, lineHeight: 1.7 }}>
+      <p style={{ marginTop: 6 }}>
         PCでコード発行 → スマホで <b>/link</b> に入力 → スマホ広告がPCに反映
       </p>
 
@@ -474,6 +466,15 @@ export default function DashboardPage() {
       )}
 
       {msg && <pre style={{ marginTop: 12, whiteSpace: "pre-wrap" }}>{msg}</pre>}
+
+      <hr style={{ margin: "24px 0" }} />
+
+      <footer style={{ fontSize: 14, opacity: 0.85, display: "flex", gap: 16, flexWrap: "wrap" }}>
+        <Link href="/privacy">プライバシーポリシー</Link>
+        <Link href="/terms">利用規約</Link>
+        <Link href="/commerce">特定商取引法に基づく表記</Link>
+        <Link href="/contact">お問い合わせ</Link>
+      </footer>
     </main>
   );
 }
