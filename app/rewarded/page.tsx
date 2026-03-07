@@ -1,273 +1,56 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Script from "next/script";
 import Link from "next/link";
-import { supabaseBrowser } from "../lib/supabase-browser";
-
-declare global {
-  interface Window {
-    googletag?: any;
-  }
-}
-
-type Mode = "auth" | "linked" | "anon" | "";
 
 export default function RewardedPage() {
-  const [status, setStatus] = useState<string>("GPT読み込み待ち…");
-  const [canShow, setCanShow] = useState<boolean>(false);
-
-  // 端末の「ログイン」状態（メールログインしたか）
-  const [userEmail, setUserEmail] = useState<string>("");
-
-  // 端末の「連動」状態（auth/linked/anon）
-  const [mode, setMode] = useState<Mode>("");
-
-  const slotRef = useRef<any>(null);
-  const readyEventRef = useRef<any>(null);
-  const initializedRef = useRef<boolean>(false);
-
-  const refreshIdentity = async () => {
-    // ログイン状態（メール）
-    const u = await supabaseBrowser.auth.getUser();
-    setUserEmail(u.data.user?.email ?? "");
-
-    // 連動状態（サーバーが判定：auth/linked/anon）
-    const { data: s } = await supabaseBrowser.auth.getSession();
-    const token = s.session?.access_token;
-
-    const res = await fetch("/api/balance", {
-      method: "GET",
-      credentials: "include",
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
-
-    const out = await res.json();
-    setMode(out?.mode ?? "");
-  };
-
-  useEffect(() => {
-    refreshIdentity();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const initIfNeeded = () => {
-    if (initializedRef.current) return;
-    initializedRef.current = true;
-
-    window.googletag = window.googletag || { cmd: [] };
-
-    window.googletag.cmd.push(() => {
-      const googletag = window.googletag;
-
-      googletag.pubads().addEventListener("rewardedSlotReady", (event: any) => {
-        if (slotRef.current && event.slot === slotRef.current) {
-          readyEventRef.current = event;
-          setCanShow(true);
-          setStatus("✅ 広告の準備OK！「広告を見る（再生）」を押してね");
-        }
-      });
-
-      googletag.pubads().addEventListener("rewardedSlotGranted", async (event: any) => {
-        if (slotRef.current && event.slot === slotRef.current) {
-          setStatus("🎁 視聴完了！チケット付与中…");
-
-          try {
-            // ログインしてるなら token を付ける（auth扱いになる）
-            const { data } = await supabaseBrowser.auth.getSession();
-            const token = data.session?.access_token;
-
-            const res = await fetch("/api/reward", {
-              method: "POST",
-              credentials: "include",
-              headers: token ? { Authorization: `Bearer ${token}` } : {},
-            });
-
-            const out = await res.json();
-
-            if (res.ok) {
-              setStatus(
-                `✅ チケット+1完了！ 現在のチケット：${out.balance}（mode=${out.mode ?? "?"}）`
-              );
-              // 付与後、表示上のmodeも更新
-              await refreshIdentity();
-            } else if (out?.reason === "missing_nonce") {
-              setStatus("⚠️ nonceが無い（先に「広告を読み込む」を押してね）");
-            } else if (out?.reason === "already_claimed") {
-              setStatus("⚠️ すでに受け取り済み（二重付与は不可）");
-            } else {
-              setStatus(`⚠️ 付与に失敗：${out?.detail ?? out?.error ?? res.status}`);
-            }
-          } catch {
-            setStatus("⚠️ 通信エラー（/api/reward）");
-          }
-        }
-      });
-
-      googletag.pubads().addEventListener("rewardedSlotClosed", (event: any) => {
-        if (slotRef.current && event.slot === slotRef.current) {
-          setCanShow(false);
-          readyEventRef.current = null;
-          setStatus("広告を閉じました。もう一回やるなら「広告を読み込む」から。");
-
-          try {
-            googletag.destroySlots([slotRef.current]);
-          } catch {}
-          slotRef.current = null;
-        }
-      });
-
-      googletag.enableServices();
-      setStatus("GPT準備OK。下の「広告を読み込む」を押してね");
-    });
-  };
-
-  const requestRewarded = async () => {
-    setStatus("準備中…（視聴1回ぶんのトークン発行）");
-    setCanShow(false);
-    readyEventRef.current = null;
-
-    // 連動状態も最新化（/link 入力直後など）
-    await refreshIdentity();
-
-    // 視聴1回ぶんのnonce発行（cookieに入る）
-    try {
-      const startRes = await fetch("/api/reward/start", {
-        method: "POST",
-        credentials: "include",
-      });
-      const startData = await startRes.json();
-      if (!startRes.ok || !startData?.ok) {
-        setStatus(`❌ start失敗：${startData?.error ?? startRes.status}`);
-        return;
-      }
-    } catch {
-      setStatus("❌ start通信エラー（/api/reward/start）");
-      return;
-    }
-
-    initIfNeeded();
-
-    window.googletag.cmd.push(() => {
-      const googletag = window.googletag;
-
-      if (slotRef.current) {
-        try {
-          googletag.destroySlots([slotRef.current]);
-        } catch {}
-        slotRef.current = null;
-      }
-
-      const slot = googletag.defineOutOfPageSlot(
-        "/22639388115/rewarded_web_example",
-        googletag.enums.OutOfPageFormat.REWARDED
-      );
-
-      if (!slot) {
-        setStatus("❌ この環境では報酬型広告が作れません（スマホで開くと成功しやすい）");
-        return;
-      }
-
-      slotRef.current = slot;
-      slot.addService(googletag.pubads());
-
-      googletag.display(slot);
-      setStatus("広告を探しています…（少し待つことがあります）");
-    });
-  };
-
-  const showRewarded = () => {
-    const ev = readyEventRef.current;
-    if (!ev) {
-      setStatus("まだ広告の準備ができてないよ。先に「広告を読み込む」を押してね");
-      return;
-    }
-    setStatus("再生中…（終わるまで待ってね）");
-    ev.makeRewardedVisible();
-  };
-
-  const modeLabel =
-    mode === "auth"
-      ? "ログイン連動（auth）"
-      : mode === "linked"
-      ? "ペアリング連動（linked）"
-      : mode === "anon"
-      ? "未連動（anon）"
-      : "判定中…";
-
   return (
-    <main style={{ padding: 24, maxWidth: 720 }}>
-      <Script
-        async
-        src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
-        strategy="afterInteractive"
-        onLoad={() => initIfNeeded()}
-      />
+    <main style={{ maxWidth: 960, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
+      <h1 style={{ fontSize: 32, fontWeight: 900 }}>無料チケットについて</h1>
 
-      <h1 style={{ fontSize: 24, fontWeight: 700 }}>報酬型（動画）広告</h1>
-
-      <p style={{ marginTop: 10 }}>
-        この端末の状態：
-        <br />
-        ・ログイン（メール）： <b>{userEmail ? userEmail : "未ログイン"}</b>
-        <br />
-        ・連動モード： <b>{modeLabel}</b>
+      <p style={{ marginTop: 16 }}>
+        このページでは、無料チケットの仕組みや利用方法を案内しています。
       </p>
 
-      {mode === "anon" && (
-        <p style={{ marginTop: 8 }}>
-          PCと連動させたいなら、先に <Link href="/link">/link</Link> で6桁コードを入力してね。
+      <p style={{ marginTop: 10 }}>
+        現在、無料ユーザー向けの機能や導線を順次整備しています。
+        利用できる内容は、今後の運営状況や機能改善に応じて更新される場合があります。
+      </p>
+
+      <hr style={{ margin: "24px 0" }} />
+
+      <section>
+        <h2 style={{ fontSize: 24, fontWeight: 900 }}>無料利用の考え方</h2>
+        <p style={{ marginTop: 12 }}>
+          本サービスでは、まず無料で小論文の投稿・採点を試し、
+          必要に応じて有料プランやPro再採点を利用できる形にしています。
         </p>
-      )}
+      </section>
 
-      <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
-        <button
-          onClick={requestRewarded}
-          style={{
-            padding: "12px 16px",
-            borderRadius: 10,
-            border: "1px solid #ccc",
-            cursor: "pointer",
-            fontWeight: 700,
-          }}
-        >
-          広告を読み込む
-        </button>
+      <hr style={{ margin: "24px 0" }} />
 
-        <button
-          onClick={showRewarded}
-          disabled={!canShow}
-          style={{
-            padding: "12px 16px",
-            borderRadius: 10,
-            border: "1px solid #ccc",
-            cursor: canShow ? "pointer" : "not-allowed",
-            fontWeight: 700,
-            opacity: canShow ? 1 : 0.5,
-          }}
-        >
-          広告を見る（再生）
-        </button>
+      <section>
+        <h2 style={{ fontSize: 24, fontWeight: 900 }}>ご案内</h2>
+        <ul style={{ marginTop: 12, paddingLeft: 20 }}>
+          <li>無料機能の提供内容は、今後変更される場合があります。</li>
+          <li>詳細な再採点や継続利用には、有料プランを利用できます。</li>
+          <li>最新の利用条件は、各ページの案内をご確認ください。</li>
+        </ul>
+      </section>
 
-        <button
-          onClick={refreshIdentity}
-          style={{
-            padding: "12px 16px",
-            borderRadius: 10,
-            border: "1px solid #ccc",
-            cursor: "pointer",
-            fontWeight: 700,
-          }}
-        >
-          状態を更新
-        </button>
+      <div style={{ marginTop: 24, display: "flex", gap: 12, flexWrap: "wrap" }}>
+        <Link href="/submit">→ 小論文を投稿する</Link>
+        <Link href="/billing">→ 料金プランを見る</Link>
+        <Link href="/dashboard">→ ダッシュボードへ</Link>
       </div>
 
-      <p style={{ marginTop: 12 }}>{status}</p>
+      <hr style={{ margin: "24px 0" }} />
 
-      <div style={{ marginTop: 18 }}>
-        <Link href="/dashboard">→ 残高を見る（dashboard）</Link>
-      </div>
+      <footer style={{ fontSize: 14, opacity: 0.85, display: "flex", gap: 16, flexWrap: "wrap" }}>
+        <Link href="/privacy">プライバシーポリシー</Link>
+        <Link href="/terms">利用規約</Link>
+        <Link href="/commerce">特定商取引法に基づく表記</Link>
+        <Link href="/contact">お問い合わせ</Link>
+      </footer>
     </main>
   );
 }
