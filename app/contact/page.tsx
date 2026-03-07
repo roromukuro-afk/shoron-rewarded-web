@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function ContactPage() {
   return (
     <main style={{ maxWidth: 900, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
@@ -14,9 +16,7 @@ export default function ContactPage() {
 
       <section style={{ marginTop: 24 }}>
         <h2 style={{ fontSize: 22, fontWeight: 900 }}>お問い合わせ先</h2>
-        <p style={{ marginTop: 8 }}>
-          メールアドレス：sato.learning@gmail.com
-        </p>
+        <p style={{ marginTop: 8 }}>メールアドレス：sato.learning@gmail.com</p>
       </section>
 
       <section style={{ marginTop: 24 }}>
@@ -35,6 +35,15 @@ export default function ContactPage() {
           内容を確認のうえ、順次対応いたします。返信までお時間をいただく場合があります。
         </p>
       </section>
+
+      <hr style={{ margin: "24px 0" }} />
+
+      <footer style={{ fontSize: 14, opacity: 0.85, display: "flex", gap: 16, flexWrap: "wrap" }}>
+        <Link href="/">トップへ戻る</Link>
+        <Link href="/privacy">プライバシーポリシー</Link>
+        <Link href="/terms">利用規約</Link>
+        <Link href="/commerce">特定商取引法に基づく表記</Link>
+      </footer>
     </main>
   );
 }
