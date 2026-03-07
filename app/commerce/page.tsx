@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function CommercePage() {
   return (
     <main style={{ maxWidth: 900, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
@@ -73,6 +75,15 @@ export default function CommercePage() {
           デジタルサービスの性質上、法令上必要な場合を除き、購入後の返品・返金には原則応じられません。
         </p>
       </section>
+
+      <hr style={{ margin: "24px 0" }} />
+
+      <footer style={{ fontSize: 14, opacity: 0.85, display: "flex", gap: 16, flexWrap: "wrap" }}>
+        <Link href="/">トップへ戻る</Link>
+        <Link href="/privacy">プライバシーポリシー</Link>
+        <Link href="/terms">利用規約</Link>
+        <Link href="/contact">お問い合わせ</Link>
+      </footer>
     </main>
   );
 }
