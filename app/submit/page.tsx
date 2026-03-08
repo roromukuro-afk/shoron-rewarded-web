@@ -59,14 +59,18 @@ export default function SubmitPage() {
 
   return (
     <main style={{ maxWidth: 960, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
-      <h1 style={{ fontSize: 32, fontWeight: 900 }}>小論文を投稿する</h1>
+      <p style={{ fontSize: 14, opacity: 0.75, fontWeight: 700 }}>
+        小論設計室
+      </p>
+
+      <h1 style={{ fontSize: 32, fontWeight: 900, marginTop: 8 }}>小論文を投稿する</h1>
 
       <p style={{ marginTop: 16 }}>
-        このページでは、小論文の下書きや答案を投稿して、AIによる採点・要約・改善点のフィードバックを受けられます。
+        小論文を投稿すると、AIが点数・要約・良い点・改善点を返します。
       </p>
 
       <p style={{ marginTop: 10 }}>
-        まずは無料で投稿でき、必要に応じてPro再採点や有料プランも利用できます。
+        まずは無料で試せて、必要に応じてPro再採点や有料プランも利用できます。
       </p>
 
       <hr style={{ margin: "24px 0" }} />
@@ -132,8 +136,8 @@ export default function SubmitPage() {
         <h2 style={{ fontSize: 24, fontWeight: 900 }}>利用の流れ</h2>
         <ol style={{ marginTop: 12, paddingLeft: 20 }}>
           <li>設問・条件・本文を入力する</li>
-          <li>送信してAI採点結果を確認する</li>
-          <li>必要ならPro再採点や有料プランを利用する</li>
+          <li>送信して採点結果を確認する</li>
+          <li>必要ならPro再採点や料金プランを利用する</li>
         </ol>
       </section>
 
