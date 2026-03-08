@@ -39,10 +39,17 @@ export default function BillingPage() {
 
   return (
     <main style={{ maxWidth: 960, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
-      <h1 style={{ fontSize: 32, fontWeight: 900 }}>料金プラン</h1>
+      <p style={{ fontSize: 14, opacity: 0.75, fontWeight: 700 }}>
+        小論設計室
+      </p>
+
+      <h1 style={{ fontSize: 32, fontWeight: 900, marginTop: 8 }}>料金プラン</h1>
 
       <p style={{ marginTop: 16 }}>
-        本サービスでは、無料採点に加えて、有料プランによりProチケットを利用できます。
+        小論設計室では、無料採点に加えて、有料プランによりProチケットを利用できます。
+      </p>
+
+      <p style={{ marginTop: 10 }}>
         Proチケットを使うと、より厳密な再採点や詳しいフィードバックを受けられます。
       </p>
 
