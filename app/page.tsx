@@ -106,6 +106,16 @@ export default function HomePage() {
               <Link href="/guide/essay-structure">→ 記事を読む</Link>
             </div>
           </div>
+
+          <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
+            <div style={{ fontWeight: 900 }}>小論文でよくある失敗5選｜点数が伸びない原因はここにある</div>
+            <p style={{ marginTop: 8 }}>
+              設問ずれ、結論の曖昧さ、理由の弱さなど、小論文でよくある失敗を整理しています。
+            </p>
+            <div style={{ marginTop: 12 }}>
+              <Link href="/guide/common-mistakes">→ 記事を読む</Link>
+            </div>
+          </div>
         </div>
       </section>
 
