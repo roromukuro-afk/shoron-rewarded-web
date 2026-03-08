@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "shoron-rewarded-web",
-  description: "AI小論文 添削・採点",
+  title: "小論設計室",
+  description: "小論文を、AIと一緒に磨く添削サービス",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

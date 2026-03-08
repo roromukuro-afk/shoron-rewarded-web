@@ -4,17 +4,22 @@ export default function HomePage() {
   return (
     <main style={{ maxWidth: 960, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
       <section style={{ padding: "40px 0 24px" }}>
-        <h1 style={{ fontSize: 38, fontWeight: 900, lineHeight: 1.3 }}>
-          AI小論文添削サービス
+        <p style={{ fontSize: 14, opacity: 0.75, fontWeight: 700 }}>
+          小論文添削サービス
+        </p>
+
+        <h1 style={{ fontSize: 38, fontWeight: 900, lineHeight: 1.3, marginTop: 8 }}>
+          小論設計室
         </h1>
 
         <p style={{ marginTop: 16, fontSize: 17 }}>
-          本サービスは、小論文の下書きや答案を投稿すると、
-          AIが点数・要約・良い点・改善点を返すオンライン添削サービスです。
+          小論文を、AIと一緒に磨く添削サービス。
         </p>
 
         <p style={{ marginTop: 12, fontSize: 16 }}>
-          無料で試せる採点機能に加えて、より厳密なPro再採点やチケット購入にも対応しています。
+          本サービスでは、小論文の下書きや答案を投稿すると、
+          AIが点数・要約・良い点・改善点を返します。
+          まずは無料で試せて、必要に応じてPro再採点や有料プランも利用できます。
         </p>
 
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 22 }}>
