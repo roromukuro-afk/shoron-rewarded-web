@@ -256,15 +256,23 @@ export default function DashboardPage() {
 
   return (
     <main style={{ padding: 24, maxWidth: 1050, lineHeight: 1.8 }}>
-      <h1 style={{ fontSize: 24, fontWeight: 900 }}>ダッシュボード</h1>
+      <p style={{ fontSize: 14, opacity: 0.75, fontWeight: 700 }}>
+        小論設計室
+      </p>
+
+      <h1 style={{ fontSize: 32, fontWeight: 900, marginTop: 8 }}>ダッシュボード</h1>
+
+      <p style={{ marginTop: 12 }}>
+        投稿履歴、チケット残高、契約状況を確認できるページです。
+      </p>
 
       {purchaseBanner && (
-        <div style={{ marginTop: 10, padding: 12, border: "1px solid #b7e4c7", borderRadius: 10 }}>
+        <div style={{ marginTop: 16, padding: 12, border: "1px solid #b7e4c7", borderRadius: 10 }}>
           {purchaseBanner}
         </div>
       )}
 
-      <div style={{ marginTop: 10, padding: 12, border: "1px solid #eee", borderRadius: 10 }}>
+      <div style={{ marginTop: 16, padding: 12, border: "1px solid #eee", borderRadius: 10 }}>
         <div>
           ログイン： <b>{userEmail ? userEmail : "未ログイン"}</b>{" "}
           <span style={{ marginLeft: 12, opacity: 0.7 }}>mode: {mode}</span>
@@ -312,8 +320,8 @@ export default function DashboardPage() {
           </button>
 
           <Link href="/submit">→ 小論文を投稿</Link>
-          <Link href="/rewarded">→ 報酬広告</Link>
-          <Link href="/billing">→ プラン購入</Link>
+          <Link href="/rewarded">→ 無料チケット案内</Link>
+          <Link href="/billing">→ 料金プラン</Link>
 
           {!userEmail ? (
             <Link href="/login">→ ログイン</Link>
@@ -371,7 +379,7 @@ export default function DashboardPage() {
 
       <h2 style={{ fontSize: 18, fontWeight: 900 }}>スマホ連動（メール不要）</h2>
       <p style={{ marginTop: 6 }}>
-        PCでコード発行 → スマホで <b>/link</b> に入力 → スマホ広告がPCに反映
+        PCでコード発行 → スマホで <b>/link</b> に入力 → スマホ側の利用状況をPCに反映
       </p>
 
       <div style={{ display: "flex", gap: 12, marginTop: 10, flexWrap: "wrap" }}>
