@@ -94,6 +94,24 @@ export default function HomePage() {
       <hr style={{ margin: "28px 0" }} />
 
       <section>
+        <h2 style={{ fontSize: 24, fontWeight: 900 }}>学習ガイド</h2>
+
+        <div style={{ display: "grid", gap: 14, marginTop: 16 }}>
+          <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
+            <div style={{ fontWeight: 900 }}>小論文の基本構成とは？まず押さえたい4つの型</div>
+            <p style={{ marginTop: 8 }}>
+              小論文が苦手な人向けに、結論・理由・具体例・まとめの基本構成を解説しています。
+            </p>
+            <div style={{ marginTop: 12 }}>
+              <Link href="/guide/essay-structure">→ 記事を読む</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr style={{ margin: "28px 0" }} />
+
+      <section>
         <h2 style={{ fontSize: 24, fontWeight: 900 }}>料金について</h2>
         <p style={{ marginTop: 12 }}>
           本サービスには、無料で使える機能と、有料のチケット・プランがあります。
