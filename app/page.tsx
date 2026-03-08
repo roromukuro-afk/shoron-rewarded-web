@@ -36,7 +36,7 @@ export default function HomePage() {
           </Link>
 
           <Link
-            href="/login"
+            href="/guide"
             style={{
               padding: "12px 16px",
               borderRadius: 10,
@@ -44,7 +44,7 @@ export default function HomePage() {
               fontWeight: 900,
             }}
           >
-            ログイン
+            学習ガイドを見る
           </Link>
 
           <Link
@@ -100,7 +100,7 @@ export default function HomePage() {
           <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
             <div style={{ fontWeight: 900 }}>小論文の基本構成とは？まず押さえたい4つの型</div>
             <p style={{ marginTop: 8 }}>
-              小論文が苦手な人向けに、結論・理由・具体例・まとめの基本構成を解説しています。
+              結論・理由・具体例・まとめの基本構成を分かりやすく解説しています。
             </p>
             <div style={{ marginTop: 12 }}>
               <Link href="/guide/essay-structure">→ 記事を読む</Link>
@@ -110,12 +110,26 @@ export default function HomePage() {
           <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
             <div style={{ fontWeight: 900 }}>小論文でよくある失敗5選｜点数が伸びない原因はここにある</div>
             <p style={{ marginTop: 8 }}>
-              設問ずれ、結論の曖昧さ、理由の弱さなど、小論文でよくある失敗を整理しています。
+              設問ずれ、結論の曖昧さ、理由の弱さなど、典型的な失敗を整理しています。
             </p>
             <div style={{ marginTop: 12 }}>
               <Link href="/guide/common-mistakes">→ 記事を読む</Link>
             </div>
           </div>
+
+          <div style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
+            <div style={{ fontWeight: 900 }}>小論文の結論の書き方｜最後を締めるだけで答案は整って見える</div>
+            <p style={{ marginTop: 8 }}>
+              まとめの作り方や、曖昧な締めを避けるコツを整理しています。
+            </p>
+            <div style={{ marginTop: 12 }}>
+              <Link href="/guide/how-to-write-conclusion">→ 記事を読む</Link>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 16 }}>
+          <Link href="/guide">→ 学習ガイド一覧へ</Link>
         </div>
       </section>
 
@@ -129,22 +143,6 @@ export default function HomePage() {
         </p>
         <div style={{ marginTop: 12 }}>
           <Link href="/billing">→ /billing</Link>
-        </div>
-      </section>
-
-      <hr style={{ margin: "28px 0" }} />
-
-      <section>
-        <h2 style={{ fontSize: 24, fontWeight: 900 }}>主なページ</h2>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 16 }}>
-          <Link href="/submit">/submit</Link>
-          <Link href="/dashboard">/dashboard</Link>
-          <Link href="/billing">/billing</Link>
-          <Link href="/rewarded">/rewarded</Link>
-          <Link href="/privacy">/privacy</Link>
-          <Link href="/terms">/terms</Link>
-          <Link href="/commerce">/commerce</Link>
-          <Link href="/contact">/contact</Link>
         </div>
       </section>
 
