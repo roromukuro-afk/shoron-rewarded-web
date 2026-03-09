@@ -1,4 +1,5 @@
 import Link from "next/link";
+import RelatedGuides from "../../components/RelatedGuides";
 
 export default function HowToWrite200400GuidePage() {
   return (
@@ -6,9 +7,7 @@ export default function HowToWrite200400GuidePage() {
       <div className="container">
         <section style={{ padding: "40px 0 12px" }}>
           <div className="page-eyebrow">小論設計室｜学習ガイド</div>
-          <h1 className="page-title">
-            200〜400字の小論文をうまくまとめるコツ
-          </h1>
+          <h1 className="page-title">200〜400字の小論文をうまくまとめるコツ</h1>
           <p className="page-lead">
             短い字数の小論文は、長く書くよりもむしろ難しいことがあります。
           </p>
@@ -101,6 +100,10 @@ export default function HowToWrite200400GuidePage() {
             </p>
           </div>
         </section>
+
+        <hr className="divider" />
+
+        <RelatedGuides currentHref="/guide/how-to-write-200-400" />
 
         <hr className="divider" />
 
