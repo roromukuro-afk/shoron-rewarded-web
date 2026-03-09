@@ -1,4 +1,5 @@
 import Link from "next/link";
+import RelatedGuides from "../../components/RelatedGuides";
 
 export default function CommonThemesGuidePage() {
   return (
@@ -124,6 +125,10 @@ export default function CommonThemesGuidePage() {
             </p>
           </div>
         </section>
+
+        <hr className="divider" />
+
+        <RelatedGuides currentHref="/guide/common-themes" />
 
         <hr className="divider" />
 
