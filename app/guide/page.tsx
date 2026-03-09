@@ -2,66 +2,92 @@ import Link from "next/link";
 
 export default function GuideIndexPage() {
   return (
-    <main style={{ maxWidth: 920, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
-      <p style={{ fontSize: 14, opacity: 0.75, fontWeight: 700 }}>
-        小論設計室｜学習ガイド
-      </p>
-
-      <h1 style={{ fontSize: 34, fontWeight: 900, marginTop: 8 }}>
-        小論文学習ガイド一覧
-      </h1>
-
-      <p style={{ marginTop: 16 }}>
-        小論文の書き方、構成、よくある失敗、結論の作り方などを順番に学べるページです。
-        はじめての人は、基本構成の記事から読むのがおすすめです。
-      </p>
-
-      <hr style={{ margin: "28px 0" }} />
-
-      <div style={{ display: "grid", gap: 16 }}>
-        <article style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
-          <h2 style={{ fontSize: 22, fontWeight: 900 }}>
-            小論文の基本構成とは？まず押さえたい4つの型
-          </h2>
-          <p style={{ marginTop: 8 }}>
-            結論・理由・具体例・まとめの基本構成を整理した入門記事です。
+    <main>
+      <div className="container">
+        <section style={{ padding: "40px 0 12px" }}>
+          <div className="page-eyebrow">小論設計室｜学習ガイド</div>
+          <h1 className="page-title">小論文学習ガイド一覧</h1>
+          <p className="page-lead">
+            小論文の書き方、構成、よくある失敗、結論の作り方などを順番に学べるページです。
           </p>
-          <div style={{ marginTop: 12 }}>
-            <Link href="/guide/essay-structure">→ 記事を読む</Link>
-          </div>
-        </article>
-
-        <article style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
-          <h2 style={{ fontSize: 22, fontWeight: 900 }}>
-            小論文でよくある失敗5選｜点数が伸びない原因はここにある
-          </h2>
-          <p style={{ marginTop: 8 }}>
-            設問ずれ、結論の弱さ、理由不足など、失敗しやすいポイントをまとめています。
+          <p style={{ marginTop: 12 }}>
+            はじめての人は、基本構成の記事から読むのがおすすめです。
+            記事を読みながら、実際に小論文を書いて投稿し、改善点を確認していきましょう。
           </p>
-          <div style={{ marginTop: 12 }}>
-            <Link href="/guide/common-mistakes">→ 記事を読む</Link>
+
+          <div className="button-row">
+            <Link href="/submit" className="button-primary">
+              小論文を投稿する
+            </Link>
+            <Link href="/billing" className="button-secondary">
+              料金プランを見る
+            </Link>
+            <Link href="/" className="button-secondary">
+              トップへ戻る
+            </Link>
           </div>
-        </article>
+        </section>
 
-        <article style={{ padding: 16, border: "1px solid #ddd", borderRadius: 12 }}>
-          <h2 style={{ fontSize: 22, fontWeight: 900 }}>
-            小論文の結論の書き方｜最後を締めるだけで答案は整って見える
-          </h2>
-          <p style={{ marginTop: 8 }}>
-            結論の言い換え方、締め方、よくある弱い終わり方を解説しています。
-          </p>
-          <div style={{ marginTop: 12 }}>
-            <Link href="/guide/how-to-write-conclusion">→ 記事を読む</Link>
+        <hr className="divider" />
+
+        <section className="section">
+          <h2 style={{ fontSize: 24, fontWeight: 900 }}>記事一覧</h2>
+
+          <div className="card-grid" style={{ marginTop: 16 }}>
+            <article className="card">
+              <h3 style={{ fontSize: 22, fontWeight: 900, margin: 0 }}>
+                小論文の基本構成とは？まず押さえたい4つの型
+              </h3>
+              <p style={{ marginTop: 10 }}>
+                結論・理由・具体例・まとめの基本構成を整理した入門記事です。
+                小論文が苦手な人が最初に読むのに向いています。
+              </p>
+              <div style={{ marginTop: 12 }}>
+                <Link href="/guide/essay-structure">→ 記事を読む</Link>
+              </div>
+            </article>
+
+            <article className="card">
+              <h3 style={{ fontSize: 22, fontWeight: 900, margin: 0 }}>
+                小論文でよくある失敗5選｜点数が伸びない原因はここにある
+              </h3>
+              <p style={{ marginTop: 10 }}>
+                設問ずれ、結論の弱さ、理由不足など、
+                失敗しやすいポイントをまとめています。
+              </p>
+              <div style={{ marginTop: 12 }}>
+                <Link href="/guide/common-mistakes">→ 記事を読む</Link>
+              </div>
+            </article>
+
+            <article className="card">
+              <h3 style={{ fontSize: 22, fontWeight: 900, margin: 0 }}>
+                小論文の結論の書き方｜最後を締めるだけで答案は整って見える
+              </h3>
+              <p style={{ marginTop: 10 }}>
+                結論の言い換え方、締め方、よくある弱い終わり方を解説しています。
+              </p>
+              <div style={{ marginTop: 12 }}>
+                <Link href="/guide/how-to-write-conclusion">→ 記事を読む</Link>
+              </div>
+            </article>
           </div>
-        </article>
-      </div>
+        </section>
 
-      <hr style={{ margin: "28px 0" }} />
+        <hr className="divider" />
 
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-        <Link href="/">→ トップへ戻る</Link>
-        <Link href="/submit">→ 小論文を投稿する</Link>
-        <Link href="/billing">→ 料金プランを見る</Link>
+        <section className="section">
+          <h2 style={{ fontSize: 24, fontWeight: 900 }}>おすすめの読み方</h2>
+
+          <div className="card" style={{ marginTop: 16 }}>
+            <ol style={{ margin: 0, paddingLeft: 20 }}>
+              <li>まず「基本構成」の記事で型を理解する</li>
+              <li>次に「よくある失敗」で自分の弱点を確認する</li>
+              <li>最後に「結論の書き方」で答案の締め方を整える</li>
+              <li>そのあと実際に小論文を投稿して、採点結果を確認する</li>
+            </ol>
+          </div>
+        </section>
       </div>
     </main>
   );
