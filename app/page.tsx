@@ -18,9 +18,11 @@ export default function HomePage() {
             <Link href="/submit" className="button-primary">
               小論文を投稿する
             </Link>
+
             <Link href="/guide" className="button-secondary">
               学習ガイドを見る
             </Link>
+
             <Link href="/billing" className="button-secondary">
               料金プランを見る
             </Link>
@@ -96,6 +98,18 @@ export default function HomePage() {
               </p>
               <div style={{ marginTop: 12 }}>
                 <Link href="/guide/how-to-write-conclusion">→ 記事を読む</Link>
+              </div>
+            </div>
+
+            <div className="card">
+              <div style={{ fontWeight: 900 }}>
+                200〜400字の小論文をうまくまとめるコツ
+              </div>
+              <p style={{ marginTop: 8 }}>
+                短い字数の小論文で、主張を1つに絞って分かりやすくまとめる方法を解説しています。
+              </p>
+              <div style={{ marginTop: 12 }}>
+                <Link href="/guide/how-to-write-200-400">→ 記事を読む</Link>
               </div>
             </div>
           </div>

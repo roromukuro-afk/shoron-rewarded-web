@@ -71,6 +71,18 @@ export default function GuideIndexPage() {
                 <Link href="/guide/how-to-write-conclusion">→ 記事を読む</Link>
               </div>
             </article>
+
+            <article className="card">
+              <h3 style={{ fontSize: 22, fontWeight: 900, margin: 0 }}>
+                200〜400字の小論文をうまくまとめるコツ
+              </h3>
+              <p style={{ marginTop: 10 }}>
+                短い字数の小論文で、主張を1つに絞って分かりやすくまとめる方法を解説しています。
+              </p>
+              <div style={{ marginTop: 12 }}>
+                <Link href="/guide/how-to-write-200-400">→ 記事を読む</Link>
+              </div>
+            </article>
           </div>
         </section>
 
@@ -83,7 +95,8 @@ export default function GuideIndexPage() {
             <ol style={{ margin: 0, paddingLeft: 20 }}>
               <li>まず「基本構成」の記事で型を理解する</li>
               <li>次に「よくある失敗」で自分の弱点を確認する</li>
-              <li>最後に「結論の書き方」で答案の締め方を整える</li>
+              <li>「結論の書き方」で答案の締め方を整える</li>
+              <li>「200〜400字のまとめ方」で短文答案の精度を上げる</li>
               <li>そのあと実際に小論文を投稿して、採点結果を確認する</li>
             </ol>
           </div>
