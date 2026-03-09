@@ -112,6 +112,18 @@ export default function HomePage() {
                 <Link href="/guide/how-to-write-200-400">→ 記事を読む</Link>
               </div>
             </div>
+
+            <div className="card">
+              <div style={{ fontWeight: 900 }}>
+                小論文でよく出るテーマ例｜まず押さえたい頻出分野
+              </div>
+              <p style={{ marginTop: 8 }}>
+                教育、AI、環境、福祉、地域、多様性など、小論文でよく問われるテーマを整理しています。
+              </p>
+              <div style={{ marginTop: 12 }}>
+                <Link href="/guide/common-themes">→ 記事を読む</Link>
+              </div>
+            </div>
           </div>
 
           <div style={{ marginTop: 16 }}>

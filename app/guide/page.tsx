@@ -83,6 +83,18 @@ export default function GuideIndexPage() {
                 <Link href="/guide/how-to-write-200-400">→ 記事を読む</Link>
               </div>
             </article>
+
+            <article className="card">
+              <h3 style={{ fontSize: 22, fontWeight: 900, margin: 0 }}>
+                小論文でよく出るテーマ例｜まず押さえたい頻出分野
+              </h3>
+              <p style={{ marginTop: 10 }}>
+                教育、AI、環境、福祉、地域、多様性など、小論文でよく問われるテーマを整理しています。
+              </p>
+              <div style={{ marginTop: 12 }}>
+                <Link href="/guide/common-themes">→ 記事を読む</Link>
+              </div>
+            </article>
           </div>
         </section>
 
@@ -97,6 +109,7 @@ export default function GuideIndexPage() {
               <li>次に「よくある失敗」で自分の弱点を確認する</li>
               <li>「結論の書き方」で答案の締め方を整える</li>
               <li>「200〜400字のまとめ方」で短文答案の精度を上げる</li>
+              <li>「よく出るテーマ例」で頻出分野を整理する</li>
               <li>そのあと実際に小論文を投稿して、採点結果を確認する</li>
             </ol>
           </div>
