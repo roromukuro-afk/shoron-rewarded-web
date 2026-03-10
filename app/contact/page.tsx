@@ -2,48 +2,60 @@ import Link from "next/link";
 
 export default function ContactPage() {
   return (
-    <main style={{ maxWidth: 900, margin: "0 auto", padding: 24, lineHeight: 1.8 }}>
-      <h1 style={{ fontSize: 32, fontWeight: 900 }}>お問い合わせ</h1>
+    <main>
+      <div className="container">
+        <section style={{ padding: "40px 0 12px" }}>
+          <div className="page-eyebrow">小論設計室｜お問い合わせ</div>
+          <h1 className="page-title">お問い合わせ</h1>
+          <p className="page-lead">
+            サービス内容、不具合、課金・チケットに関するお問い合わせを受け付けています。
+          </p>
+        </section>
 
-      <p style={{ marginTop: 16 }}>
-        本サービスに関するお問い合わせは、以下の方法でご連絡ください。
-      </p>
+        <hr className="divider" />
 
-      <section style={{ marginTop: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 900 }}>運営者</h2>
-        <p style={{ marginTop: 8 }}>佐藤 慶音</p>
-      </section>
+        <section className="section">
+          <div
+            className="card-grid"
+            style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}
+          >
+            <div className="card">
+              <div style={{ fontWeight: 900, fontSize: 18 }}>運営者</div>
+              <p style={{ marginTop: 8 }}>佐藤 慶音</p>
+            </div>
 
-      <section style={{ marginTop: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 900 }}>お問い合わせ先</h2>
-        <p style={{ marginTop: 8 }}>メールアドレス：sato.learning@gmail.com</p>
-      </section>
+            <div className="card">
+              <div style={{ fontWeight: 900, fontSize: 18 }}>メールアドレス</div>
+              <p style={{ marginTop: 8 }}>sato.learning@gmail.com</p>
+            </div>
 
-      <section style={{ marginTop: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 900 }}>対応内容</h2>
-        <ul style={{ marginTop: 8, paddingLeft: 20 }}>
-          <li>サービス内容に関する質問</li>
-          <li>不具合の報告</li>
-          <li>課金・チケットに関するお問い合わせ</li>
-          <li>その他のお問い合わせ</li>
-        </ul>
-      </section>
+            <div className="card">
+              <div style={{ fontWeight: 900, fontSize: 18 }}>対応内容</div>
+              <ul style={{ marginTop: 8, paddingLeft: 20 }}>
+                <li>サービス内容に関する質問</li>
+                <li>不具合の報告</li>
+                <li>課金・チケットに関するお問い合わせ</li>
+                <li>その他のお問い合わせ</li>
+              </ul>
+            </div>
+          </div>
 
-      <section style={{ marginTop: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 900 }}>返信について</h2>
-        <p style={{ marginTop: 8 }}>
-          内容を確認のうえ、順次対応いたします。返信までお時間をいただく場合があります。
-        </p>
-      </section>
+          <div className="card" style={{ marginTop: 18 }}>
+            <div style={{ fontWeight: 900, fontSize: 18 }}>返信について</div>
+            <p style={{ marginTop: 8 }}>
+              内容を確認のうえ、順次対応いたします。返信までお時間をいただく場合があります。
+            </p>
+          </div>
+        </section>
 
-      <hr style={{ margin: "24px 0" }} />
+        <hr className="divider" />
 
-      <footer style={{ fontSize: 14, opacity: 0.85, display: "flex", gap: 16, flexWrap: "wrap" }}>
-        <Link href="/">トップへ戻る</Link>
-        <Link href="/privacy">プライバシーポリシー</Link>
-        <Link href="/terms">利用規約</Link>
-        <Link href="/commerce">特定商取引法に基づく表記</Link>
-      </footer>
+        <div className="button-row">
+          <Link href="/" className="button-secondary">トップへ戻る</Link>
+          <Link href="/about" className="button-secondary">サービス概要</Link>
+          <Link href="/submit" className="button-primary">小論文を投稿する</Link>
+        </div>
+      </div>
     </main>
   );
 }
