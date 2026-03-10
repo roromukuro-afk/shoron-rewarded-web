@@ -1,36 +1,38 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { supabaseBrowser } from "../lib/supabase-browser";
 
 type BillingPlan = "none" | "basic" | "plus" | "unknown";
 
 export default function DashboardPage() {
-  const [userEmail, setUserEmail] = useState<string>("");
-  const [userId, setUserId] = useState<string>("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userId, setUserId] = useState("");
 
   const [freeBalance, setFreeBalance] = useState<number | null>(null);
   const [proBalance, setProBalance] = useState<number | null>(null);
-  const [mode, setMode] = useState<string>("");
+  const [mode, setMode] = useState("");
 
-  const [msg, setMsg] = useState<string>("");
-
-  const [pairCode, setPairCode] = useState<string>("");
-  const [pairExp, setPairExp] = useState<string>("");
+  const [msg, setMsg] = useState("");
+  const [pairCode, setPairCode] = useState("");
+  const [pairExp, setPairExp] = useState("");
 
   const [items, setItems] = useState<any[]>([]);
 
-  const [adminSecret, setAdminSecret] = useState<string>("");
-  const [grantAmount, setGrantAmount] = useState<string>("40");
-  const [grantMsg, setGrantMsg] = useState<string>("");
+  const [adminSecret, setAdminSecret] = useState("");
+  const [grantAmount, setGrantAmount] = useState("40");
+  const [grantMsg, setGrantMsg] = useState("");
 
   const [billingPlan, setBillingPlan] = useState<BillingPlan>("none");
-  const [billingStatus, setBillingStatus] = useState<string>("(未取得)");
-  const [billingPeriodEnd, setBillingPeriodEnd] = useState<string>("");
-  const [billingMsg, setBillingMsg] = useState<string>("");
+  const [billingStatus, setBillingStatus] = useState("(未取得)");
+  const [billingPeriodEnd, setBillingPeriodEnd] = useState("");
+  const [billingMsg, setBillingMsg] = useState("");
 
-  const [purchaseBanner, setPurchaseBanner] = useState<string>("");
+  const [purchaseBanner, setPurchaseBanner] = useState("");
+
+  const siteOrigin =
+    typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
 
   const refreshUser = async () => {
     const u = await supabaseBrowser.auth.getUser();
@@ -76,6 +78,7 @@ export default function DashboardPage() {
   const loadBilling = async () => {
     setBillingMsg("");
     const token = await getToken();
+
     if (!token) {
       setBillingPlan("none");
       setBillingStatus("未ログイン");
@@ -121,7 +124,7 @@ export default function DashboardPage() {
     const token = await getToken();
 
     if (!token) {
-      setMsg("❌ ログインしてから発行してね");
+      setMsg("❌ ログインしてから発行してください。");
       return;
     }
 
@@ -140,14 +143,14 @@ export default function DashboardPage() {
 
     setPairCode(out.code);
     setPairExp(out.expiresAt);
-    setMsg("✅ コード発行OK（スマホで /link を開いて入力）");
+    setMsg("✅ コードを発行しました。");
   };
 
   const copy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
       setMsg("✅ コピーしました");
-      setTimeout(() => setMsg(""), 800);
+      setTimeout(() => setMsg(""), 1000);
     } catch {
       setMsg("⚠️ コピーできませんでした");
       setTimeout(() => setMsg(""), 1200);
@@ -156,14 +159,16 @@ export default function DashboardPage() {
 
   const grantPro = async () => {
     setGrantMsg("付与中…");
+
     try {
       if (!userId) {
-        setGrantMsg("❌ user_id がありません（ログインしてね）");
+        setGrantMsg("❌ user_id がありません。ログインしてください。");
         return;
       }
+
       const amount = Number(grantAmount);
       if (!Number.isFinite(amount) || amount <= 0) {
-        setGrantMsg("❌ amount が不正");
+        setGrantMsg("❌ amount が不正です。");
         return;
       }
 
@@ -180,7 +185,7 @@ export default function DashboardPage() {
         return;
       }
 
-      setGrantMsg(`✅ Pro +${out.added} 付与しました`);
+      setGrantMsg(`✅ Pro +${out.added} を付与しました`);
       await loadBalance();
     } catch (e: any) {
       setGrantMsg(`❌ 通信エラー：${e?.message ?? "unknown"}`);
@@ -189,6 +194,7 @@ export default function DashboardPage() {
 
   const openPortal = async () => {
     setBillingMsg("管理画面を開いています…");
+
     try {
       const token = await getToken();
       if (!token) {
@@ -214,14 +220,12 @@ export default function DashboardPage() {
     }
   };
 
-  const planLabel =
-    billingPlan === "basic"
-      ? "Basic（500円/月）"
-      : billingPlan === "plus"
-      ? "Plus（960円/月）"
-      : billingPlan === "unknown"
-      ? "Unknown（設定外）"
-      : "未契約";
+  const planLabel = useMemo(() => {
+    if (billingPlan === "basic") return "Basic（500円/月）";
+    if (billingPlan === "plus") return "Plus（960円/月）";
+    if (billingPlan === "unknown") return "Unknown（設定外）";
+    return "未契約";
+  }, [billingPlan]);
 
   useEffect(() => {
     loadAll();
@@ -235,7 +239,9 @@ export default function DashboardPage() {
     const billing = sp.get("billing");
 
     if (billing === "success") {
-      setPurchaseBanner("✅ 購入ありがとうございます！Proチケットが反映されるまで数秒かかることがあります。必要なら「更新」を押してね。");
+      setPurchaseBanner(
+        "✅ 購入ありがとうございます。Proチケット反映まで少し時間がかかる場合があります。必要なら「更新」を押してください。"
+      );
       (async () => {
         await loadBilling();
         await loadBalance();
@@ -255,234 +261,393 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <main style={{ padding: 24, maxWidth: 1050, lineHeight: 1.8 }}>
-      <p style={{ fontSize: 14, opacity: 0.75, fontWeight: 700 }}>
-        小論設計室
-      </p>
-
-      <h1 style={{ fontSize: 32, fontWeight: 900, marginTop: 8 }}>ダッシュボード</h1>
-
-      <p style={{ marginTop: 12 }}>
-        投稿履歴、チケット残高、契約状況を確認できるページです。
-      </p>
-
-      {purchaseBanner && (
-        <div style={{ marginTop: 16, padding: 12, border: "1px solid #b7e4c7", borderRadius: 10 }}>
-          {purchaseBanner}
-        </div>
-      )}
-
-      <div style={{ marginTop: 16, padding: 12, border: "1px solid #eee", borderRadius: 10 }}>
-        <div>
-          ログイン： <b>{userEmail ? userEmail : "未ログイン"}</b>{" "}
-          <span style={{ marginLeft: 12, opacity: 0.7 }}>mode: {mode}</span>
-        </div>
-
-        <div style={{ marginTop: 6 }}>
-          user_id：{" "}
-          <b style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
-            {userId ? userId : "（なし）"}
-          </b>{" "}
-          {userId && (
-            <button
-              onClick={() => copy(userId)}
-              style={{
-                marginLeft: 10,
-                padding: "6px 10px",
-                borderRadius: 8,
-                border: "1px solid #ccc",
-                cursor: "pointer",
-                fontWeight: 800,
-              }}
-            >
-              コピー
-            </button>
-          )}
-        </div>
-
-        <div style={{ marginTop: 8 }}>
-          Free：<b style={{ fontSize: 18 }}>{freeBalance === null ? "…" : freeBalance}</b> ／
-          Pro：<b style={{ fontSize: 18 }}>{proBalance === null ? "…" : proBalance}</b>
-        </div>
-
-        <div style={{ display: "flex", gap: 12, marginTop: 12, flexWrap: "wrap" }}>
-          <button
-            onClick={loadAll}
+    <main>
+      <div className="container">
+        <section style={{ padding: "40px 0 12px" }}>
+          <div
             style={{
-              padding: "10px 14px",
-              borderRadius: 10,
-              border: "1px solid #ccc",
-              cursor: "pointer",
-              fontWeight: 900,
+              display: "grid",
+              gap: 24,
+              gridTemplateColumns: "1.15fr 0.85fr",
+              alignItems: "start",
             }}
           >
-            更新
-          </button>
+            <div>
+              <div className="page-eyebrow">小論設計室｜ダッシュボード</div>
+              <h1 className="page-title">ダッシュボード</h1>
+              <p className="page-lead">
+                投稿履歴、チケット残高、契約状況をまとめて確認できます。
+              </p>
 
-          <Link href="/submit">→ 小論文を投稿</Link>
-          <Link href="/rewarded">→ 無料チケット案内</Link>
-          <Link href="/billing">→ 料金プラン</Link>
+              <p style={{ marginTop: 12 }}>
+                小論文の継続学習をしやすくするために、利用状況をここでまとめて管理できます。
+              </p>
 
-          {!userEmail ? (
-            <Link href="/login">→ ログイン</Link>
-          ) : (
-            <button
-              onClick={logout}
-              style={{
-                padding: "10px 14px",
-                borderRadius: 10,
-                border: "1px solid #ccc",
-                cursor: "pointer",
-                fontWeight: 900,
-              }}
-            >
-              ログアウト
-            </button>
-          )}
-        </div>
-      </div>
+              {purchaseBanner && (
+                <div
+                  className="card"
+                  style={{
+                    marginTop: 18,
+                    border: "1px solid #b7e4c7",
+                    background: "#f0fdf4",
+                  }}
+                >
+                  {purchaseBanner}
+                </div>
+              )}
 
-      <hr style={{ margin: "18px 0" }} />
+              <div className="card" style={{ marginTop: 20 }}>
+                <div style={{ fontWeight: 900, fontSize: 18 }}>アカウント情報</div>
 
-      <h2 style={{ fontSize: 18, fontWeight: 900 }}>契約状況</h2>
-      <div style={{ marginTop: 8, padding: 12, border: "1px solid #eee", borderRadius: 10 }}>
-        <div>プラン： <b>{planLabel}</b></div>
-        <div style={{ marginTop: 4 }}>状態： <b>{billingStatus}</b></div>
-        {billingPeriodEnd && (
-          <div style={{ marginTop: 4, fontSize: 12, opacity: 0.8 }}>
-            期限（current_period_end）：{billingPeriodEnd}
+                <div style={{ marginTop: 12 }}>
+                  ログイン： <b>{userEmail || "未ログイン"}</b>
+                  <span style={{ marginLeft: 12 }} className="muted">
+                    mode: {mode}
+                  </span>
+                </div>
+
+                <div style={{ marginTop: 8 }}>
+                  user_id：{" "}
+                  <b style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+                    {userId || "（なし）"}
+                  </b>
+                  {userId && (
+                    <button
+                      onClick={() => copy(userId)}
+                      className="button-secondary"
+                      style={{ marginLeft: 10, padding: "8px 12px" }}
+                    >
+                      コピー
+                    </button>
+                  )}
+                </div>
+
+                <div
+                  className="card-grid"
+                  style={{
+                    marginTop: 16,
+                    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: 14,
+                      borderRadius: 14,
+                      border: "1px solid var(--line)",
+                      background: "#fff",
+                    }}
+                  >
+                    <div className="muted" style={{ fontSize: 13 }}>
+                      Free
+                    </div>
+                    <div style={{ fontSize: 28, fontWeight: 900, marginTop: 4 }}>
+                      {freeBalance === null ? "…" : freeBalance}
+                    </div>
+                  </div>
+
+                  <div
+                    style={{
+                      padding: 14,
+                      borderRadius: 14,
+                      border: "1px solid var(--line)",
+                      background: "#fff",
+                    }}
+                  >
+                    <div className="muted" style={{ fontSize: 13 }}>
+                      Pro
+                    </div>
+                    <div style={{ fontSize: 28, fontWeight: 900, marginTop: 4 }}>
+                      {proBalance === null ? "…" : proBalance}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="button-row" style={{ marginTop: 18 }}>
+                  <button onClick={loadAll} className="button-primary">
+                    更新する
+                  </button>
+                  <Link href="/submit" className="button-secondary">
+                    小論文を投稿
+                  </Link>
+                  <Link href="/billing" className="button-secondary">
+                    料金プラン
+                  </Link>
+                  {!userEmail ? (
+                    <Link href="/login" className="button-secondary">
+                      ログイン
+                    </Link>
+                  ) : (
+                    <button onClick={logout} className="button-secondary">
+                      ログアウト
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div
+                className="card"
+                style={{
+                  background: "linear-gradient(180deg, #ffffff 0%, #f8fbff 100%)",
+                }}
+              >
+                <div style={{ fontSize: 13, color: "var(--muted)", fontWeight: 700 }}>
+                  次にやること
+                </div>
+
+                <div style={{ marginTop: 14, display: "grid", gap: 12 }}>
+                  {[
+                    ["無料診断を試す", "まだ投稿が少ないなら、まずは1本書いてみる"],
+                    ["学習ガイドを読む", "構成や失敗例を読んでから再挑戦する"],
+                    ["必要ならプラン確認", "詳しく改善したいときはProも検討する"],
+                  ].map(([title, desc]) => (
+                    <div
+                      key={title}
+                      style={{
+                        padding: 14,
+                        borderRadius: 14,
+                        border: "1px solid var(--line)",
+                        background: "#fff",
+                      }}
+                    >
+                      <div style={{ fontWeight: 900 }}>{title}</div>
+                      <div style={{ marginTop: 6, fontSize: 14, color: "var(--muted)" }}>
+                        {desc}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="card" style={{ marginTop: 16 }}>
+                <div style={{ fontWeight: 900, fontSize: 18 }}>スマホ連動</div>
+                <p style={{ marginTop: 10 }}>
+                  PCでコードを発行し、スマホで <b>/link</b> を開いて入力すると連動できます。
+                </p>
+
+                <div className="button-row" style={{ marginTop: 14 }}>
+                  <button onClick={createPairCode} className="button-secondary">
+                    6桁コード発行
+                  </button>
+                </div>
+
+                <p style={{ marginTop: 10, fontSize: 14 }} className="muted">
+                  スマホで開くURL：{siteOrigin}/link
+                </p>
+
+                {pairCode && (
+                  <div
+                    style={{
+                      marginTop: 14,
+                      padding: 14,
+                      borderRadius: 14,
+                      border: "1px solid var(--line)",
+                      background: "#fff",
+                    }}
+                  >
+                    <div className="muted" style={{ fontSize: 13 }}>
+                      スマホで入力するコード
+                    </div>
+                    <div style={{ fontSize: 30, fontWeight: 900, letterSpacing: 4, marginTop: 6 }}>
+                      {pairCode}
+                    </div>
+                    <div className="muted" style={{ fontSize: 12, marginTop: 6 }}>
+                      有効期限：{pairExp}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
+        </section>
+
+        <hr className="divider" />
+
+        <section className="section">
+          <h2 style={{ fontSize: 26, fontWeight: 900 }}>契約状況</h2>
+
+          <div className="card" style={{ marginTop: 18 }}>
+            <div className="card-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+              <div>
+                <div className="muted" style={{ fontSize: 13 }}>
+                  プラン
+                </div>
+                <div style={{ fontWeight: 900, fontSize: 20, marginTop: 4 }}>{planLabel}</div>
+              </div>
+
+              <div>
+                <div className="muted" style={{ fontSize: 13 }}>
+                  状態
+                </div>
+                <div style={{ fontWeight: 900, fontSize: 20, marginTop: 4 }}>{billingStatus}</div>
+              </div>
+
+              <div>
+                <div className="muted" style={{ fontSize: 13 }}>
+                  期限
+                </div>
+                <div style={{ fontWeight: 900, fontSize: 16, marginTop: 6 }}>
+                  {billingPeriodEnd || "未取得"}
+                </div>
+              </div>
+            </div>
+
+            <div className="button-row" style={{ marginTop: 18 }}>
+              <button onClick={loadBilling} className="button-secondary">
+                契約状況を更新
+              </button>
+
+              {billingPlan !== "none" && (
+                <button onClick={openPortal} className="button-primary">
+                  プラン変更 / 解約
+                </button>
+              )}
+            </div>
+
+            {billingMsg && (
+              <pre
+                style={{
+                  marginTop: 16,
+                  whiteSpace: "pre-wrap",
+                  background: "#f9fafb",
+                  border: "1px solid var(--line)",
+                  borderRadius: 12,
+                  padding: 14,
+                }}
+              >
+                {billingMsg}
+              </pre>
+            )}
+          </div>
+        </section>
+
+        <hr className="divider" />
+
+        <section className="section">
+          <h2 style={{ fontSize: 26, fontWeight: 900 }}>提出履歴</h2>
+
+          {items.length === 0 ? (
+            <div className="card" style={{ marginTop: 18 }}>
+              <p className="muted">まだ投稿がありません。まずは1本書いてみましょう。</p>
+              <div className="button-row" style={{ marginTop: 14 }}>
+                <Link href="/submit" className="button-primary">
+                  小論文を投稿する
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="card-grid" style={{ marginTop: 18 }}>
+              {items.map((it) => (
+                <div key={it.id} className="card">
+                  <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+                    <div style={{ fontWeight: 900 }}>
+                      ID: {it.id} / {it.char_count}字 / score: {it.score ?? "?"}
+                    </div>
+                    <Link href={`/result/${it.id}`}>→ 結果を見る</Link>
+                  </div>
+
+                  <div style={{ marginTop: 8 }}>{it.question}</div>
+                  <div className="muted" style={{ marginTop: 6, fontSize: 12 }}>
+                    {it.created_at}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <hr className="divider" />
+
+        <section className="section">
+          <h2 style={{ fontSize: 26, fontWeight: 900 }}>管理者用テスト機能</h2>
+
+          <div className="card" style={{ marginTop: 18, maxWidth: 620 }}>
+            <div style={{ display: "grid", gap: 14 }}>
+              <label>
+                <div style={{ fontWeight: 900 }}>ADMIN_SECRET</div>
+                <input
+                  value={adminSecret}
+                  onChange={(e) => setAdminSecret(e.target.value)}
+                  placeholder="（.env.local の ADMIN_SECRET）"
+                  style={{
+                    width: "100%",
+                    marginTop: 8,
+                    padding: 12,
+                    borderRadius: 12,
+                    border: "1px solid var(--line)",
+                    background: "#fff",
+                  }}
+                />
+              </label>
+
+              <label>
+                <div style={{ fontWeight: 900 }}>付与枚数</div>
+                <input
+                  value={grantAmount}
+                  onChange={(e) => setGrantAmount(e.target.value.replace(/[^\d]/g, ""))}
+                  style={{
+                    width: 160,
+                    marginTop: 8,
+                    padding: 12,
+                    borderRadius: 12,
+                    border: "1px solid var(--line)",
+                    background: "#fff",
+                  }}
+                />
+              </label>
+
+              <div className="button-row">
+                <button onClick={grantPro} className="button-secondary">
+                  Proを付与
+                </button>
+              </div>
+
+              {grantMsg && (
+                <pre
+                  style={{
+                    margin: 0,
+                    whiteSpace: "pre-wrap",
+                    background: "#f9fafb",
+                    border: "1px solid var(--line)",
+                    borderRadius: 12,
+                    padding: 14,
+                  }}
+                >
+                  {grantMsg}
+                </pre>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {msg && (
+          <>
+            <hr className="divider" />
+            <section className="section">
+              <div
+                className="card"
+                style={{
+                  background: "#f9fafb",
+                }}
+              >
+                <pre style={{ margin: 0, whiteSpace: "pre-wrap" }}>{msg}</pre>
+              </div>
+            </section>
+          </>
         )}
 
-        <div style={{ display: "flex", gap: 12, marginTop: 10, flexWrap: "wrap" }}>
-          <button
-            onClick={loadBilling}
-            style={{ padding: "10px 14px", borderRadius: 10, border: "1px solid #ccc", fontWeight: 900, cursor: "pointer" }}
-          >
-            契約状況を更新
-          </button>
+        <hr className="divider" />
 
-          {billingPlan !== "none" && (
-            <button
-              onClick={openPortal}
-              style={{ padding: "10px 14px", borderRadius: 10, border: "1px solid #ccc", fontWeight: 900, cursor: "pointer" }}
-            >
-              プラン変更/解約（Stripe）
-            </button>
-          )}
-        </div>
-
-        {billingMsg && <pre style={{ marginTop: 10, whiteSpace: "pre-wrap" }}>{billingMsg}</pre>}
-      </div>
-
-      <hr style={{ margin: "18px 0" }} />
-
-      <h2 style={{ fontSize: 18, fontWeight: 900 }}>スマホ連動（メール不要）</h2>
-      <p style={{ marginTop: 6 }}>
-        PCでコード発行 → スマホで <b>/link</b> に入力 → スマホ側の利用状況をPCに反映
-      </p>
-
-      <div style={{ display: "flex", gap: 12, marginTop: 10, flexWrap: "wrap" }}>
-        <button
-          onClick={createPairCode}
-          style={{
-            padding: "10px 14px",
-            borderRadius: 10,
-            border: "1px solid #ccc",
-            cursor: "pointer",
-            fontWeight: 900,
-          }}
-        >
-          6桁コード発行
-        </button>
-
-        <span style={{ fontSize: 12, opacity: 0.8 }}>
-          スマホ：<b>http://192.168.128.169:3000/link</b>
-        </span>
-      </div>
-
-      {pairCode && (
-        <div style={{ marginTop: 10, padding: 12, border: "1px solid #ddd", borderRadius: 10 }}>
-          <div style={{ fontSize: 14, opacity: 0.8 }}>スマホで入力：</div>
-          <div style={{ fontSize: 28, fontWeight: 900, letterSpacing: 4 }}>{pairCode}</div>
-          <div style={{ fontSize: 12, opacity: 0.7 }}>有効期限：{pairExp}</div>
-        </div>
-      )}
-
-      <hr style={{ margin: "18px 0" }} />
-
-      <h2 style={{ fontSize: 18, fontWeight: 900 }}>管理者：Pro付与（テスト用）</h2>
-      <div style={{ marginTop: 10, padding: 12, border: "1px solid #eee", borderRadius: 10 }}>
-        <div style={{ display: "grid", gap: 10, maxWidth: 520 }}>
-          <label>
-            <div style={{ fontWeight: 800 }}>ADMIN_SECRET</div>
-            <input
-              value={adminSecret}
-              onChange={(e) => setAdminSecret(e.target.value)}
-              placeholder="（.env.localのADMIN_SECRET）"
-              style={{ width: "100%", padding: 10, borderRadius: 10, border: "1px solid #ccc" }}
-            />
-          </label>
-
-          <label>
-            <div style={{ fontWeight: 800 }}>付与枚数（例：40）</div>
-            <input
-              value={grantAmount}
-              onChange={(e) => setGrantAmount(e.target.value.replace(/[^\d]/g, ""))}
-              style={{ width: 140, padding: 10, borderRadius: 10, border: "1px solid #ccc" }}
-            />
-          </label>
-
-          <button
-            onClick={grantPro}
-            style={{
-              padding: "10px 14px",
-              borderRadius: 10,
-              border: "1px solid #ccc",
-              cursor: "pointer",
-              fontWeight: 900,
-              width: 200,
-            }}
-          >
-            Proを付与
-          </button>
-
-          {grantMsg && <pre style={{ whiteSpace: "pre-wrap" }}>{grantMsg}</pre>}
+        <div className="button-row">
+          <Link href="/guide" className="button-secondary">
+            学習ガイドを見る
+          </Link>
+          <Link href="/rewarded" className="button-secondary">
+            無料チケットを見る
+          </Link>
         </div>
       </div>
-
-      <hr style={{ margin: "18px 0" }} />
-
-      <h2 style={{ fontSize: 18, fontWeight: 900 }}>提出履歴</h2>
-      {items.length === 0 ? (
-        <p style={{ marginTop: 8, opacity: 0.8 }}>まだ投稿がありません</p>
-      ) : (
-        <div style={{ marginTop: 10, display: "grid", gap: 10 }}>
-          {items.map((it) => (
-            <div key={it.id} style={{ padding: 12, border: "1px solid #ddd", borderRadius: 10 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                <div style={{ fontWeight: 900 }}>
-                  ID: {it.id} / {it.char_count}字 / score: {it.score ?? "?"}
-                </div>
-                <Link href={`/result/${it.id}`}>→ 結果を見る</Link>
-              </div>
-              <div style={{ marginTop: 6, opacity: 0.8 }}>{it.question}</div>
-              <div style={{ marginTop: 4, fontSize: 12, opacity: 0.6 }}>{it.created_at}</div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {msg && <pre style={{ marginTop: 12, whiteSpace: "pre-wrap" }}>{msg}</pre>}
-
-      <hr style={{ margin: "24px 0" }} />
-
-      <footer style={{ fontSize: 14, opacity: 0.85, display: "flex", gap: 16, flexWrap: "wrap" }}>
-        <Link href="/privacy">プライバシーポリシー</Link>
-        <Link href="/terms">利用規約</Link>
-        <Link href="/commerce">特定商取引法に基づく表記</Link>
-        <Link href="/contact">お問い合わせ</Link>
-      </footer>
     </main>
   );
 }
