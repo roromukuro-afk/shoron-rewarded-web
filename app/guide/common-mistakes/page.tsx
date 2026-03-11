@@ -1,31 +1,33 @@
 import Link from "next/link";
 import RelatedGuides from "../../components/RelatedGuides";
 
-export default function CommonMistakesGuidePage() {
+export default function EssayStructureGuidePage() {
   return (
     <main>
       <div className="article-shell">
         <section className="article-hero">
           <div className="article-hero-card">
             <div className="page-eyebrow">小論設計室｜学習ガイド</div>
-            <h1 className="page-title">小論文でよくある失敗5選｜点数が伸びない原因はここにある</h1>
+            <h1 className="page-title">小論文の基本構成とは？まず押さえたい4つの型</h1>
             <p className="page-lead">
-              小論文を書いているのに点数が伸びない人は、典型的な失敗を繰り返していることが少なくありません。
+              小論文が書けないと感じる人の多くは、最初から文章力で勝負しようとしています。
             </p>
 
             <p style={{ marginTop: 12 }}>
-              特に受験の小論文では、「それっぽく書く」だけでは評価されにくく、
-              設問への答え方や論理の組み立て方が重視されます。
+              でも実際には、「何をどの順番で書くか」という構成が決まっているだけで、
+              小論文はかなり書きやすくなります。受験で求められる小論文では、
+              自由に書くことよりも、読み手に伝わる順序で論を組み立てることが大切です。
             </p>
 
             <p style={{ marginTop: 12 }}>
-              ここでは、小論文でよくある失敗を5つに分けて整理します。
+              そのため、まずは基本構成を理解し、
+              どのテーマでも使える型として身につけることが重要です。
             </p>
 
             <div className="article-meta">
-              <span className="article-chip">失敗回避</span>
-              <span className="article-chip">見直し向け</span>
-              <span className="article-chip">書いた後に役立つ</span>
+              <span className="article-chip">入門向け</span>
+              <span className="article-chip">構成の基本</span>
+              <span className="article-chip">まず最初に読む記事</span>
             </div>
           </div>
         </section>
@@ -34,110 +36,95 @@ export default function CommonMistakesGuidePage() {
 
         <div className="article-body">
           <section className="article-section">
-            <h2 className="article-section-title">1. 設問に正面から答えていない</h2>
+            <h2 className="article-section-title">1. 結論</h2>
             <div className="article-section-card">
               <p>
-                最も多い失敗は、設問に対する答えになっていないことです。
-                小論文では自分の知っている話を書くのではなく、
-                問われた内容にきちんと答えることが第一です。
+                最初に、自分の立場や主張を明確に示します。
+                小論文では「結局何が言いたいのか」が最初に分かる方が読みやすく、
+                採点者にも論点が伝わりやすくなります。
               </p>
               <p>
-                たとえば「あなたの考えを述べなさい」と書かれているのに、
-                客観的な説明だけで終わってしまうと、設問への回答としては弱くなります。
-                まずは「何が問われているか」を正確に確認することが大切です。
+                たとえば、「AIの活用は今後の学習に必要である」という設問なら、
+                冒頭で「私は、AIの活用は今後の学習に必要だと考える」と書く形です。
+                この一文があるだけで、全文の方向性がはっきりします。
               </p>
             </div>
           </section>
 
           <section className="article-section">
-            <h2 className="article-section-title">2. 結論が曖昧</h2>
+            <h2 className="article-section-title">2. 理由</h2>
             <div className="article-section-card">
               <p>
-                自分の立場がはっきりしない文章も評価されにくいです。
-                「どちらとも言える」「一概には言えない」といった表現を使いすぎると、
-                読み手には結局何が言いたいのか伝わりません。
+                次に、その結論を支える理由を書きます。
+                理由は1つでも書けますが、可能なら2つあると説得力が増します。
+                ただし、短い字数では無理に増やすより、1つをしっかり説明する方が良い場合もあります。
               </p>
               <p>
-                最終的に自分はどの立場を取るのかを明確に示す必要があります。
-                小論文では、曖昧さよりも整理された主張が重要です。
+                ここで大切なのは、「なぜそう言えるのか」を一段深く言語化することです。
+                単に「便利だから」では弱く、
+                「個別最適な学習ができるから」「復習効率が上がるから」など、
+                具体的な理由に落とし込む必要があります。
               </p>
             </div>
           </section>
 
           <section className="article-section">
-            <h2 className="article-section-title">3. 理由が弱い</h2>
+            <h2 className="article-section-title">3. 具体例</h2>
             <div className="article-section-card">
               <p>
-                結論は書けていても、その理由が浅いと説得力が出ません。
-                「便利だから」「大切だから」だけでは、なぜそう言えるのかが不足しています。
+                理由だけでは抽象的に見えることがあるため、
+                必要に応じて具体例を添えます。具体例は、自分の経験でも社会一般の事例でもかまいません。
               </p>
               <p>
-                理由を書くときは、「それによって何が起こるのか」「なぜ価値があるのか」まで一段深く考える必要があります。
-                たとえば「AIは便利だから必要だ」ではなく、
-                「個別最適な学習が可能になり、弱点克服の効率が上がるから必要だ」とした方が強い文章になります。
+                たとえば、「AIは苦手分野を分析して復習しやすくする」という主張なら、
+                「英語学習アプリが苦手な単元を自動で提示してくれるように、
+                AIは弱点補強に役立つ」といった書き方ができます。
+                具体例があることで、読み手は主張をイメージしやすくなります。
               </p>
             </div>
           </section>
 
           <section className="article-section">
-            <h2 className="article-section-title">4. 具体例がずれている</h2>
+            <h2 className="article-section-title">4. まとめ</h2>
             <div className="article-section-card">
               <p>
-                具体例は、理由を支えるために使うものです。
-                しかし、関係の薄いエピソードや無理に入れた経験談は、かえって論の流れを崩します。
+                最後に、最初の結論をもう一度言い直しながら全体を締めます。
+                ここでは新しい話を広げる必要はなく、
+                「以上の理由から、私は〜と考える」と結ぶだけでも十分です。
               </p>
               <p>
-                良い具体例は、「その理由が実際に成り立つこと」を示すものです。
-                自分の体験を書くなら、単なる思い出ではなく、
-                主張とのつながりが明確に分かる形にする必要があります。
+                まとめが弱いと、文章全体が途中で終わった印象になります。
+                逆に最後まできちんと締めると、それだけで答案全体が整理されて見えます。
               </p>
             </div>
           </section>
 
           <section className="article-section">
-            <h2 className="article-section-title">5. まとめが弱い</h2>
-            <div className="article-section-card">
-              <p>
-                小論文の最後が弱いと、全体の印象も弱くなります。
-                最後まで書き切らずに終わったり、新しい話を急に足したりすると、
-                文章全体がまとまって見えません。
-              </p>
-              <p>
-                まとめでは、冒頭の結論を改めて確認し、
-                「以上の理由から〜と考える」と自然に締めることが重要です。
-                しっかり締めるだけで、答案全体の完成度が上がります。
-              </p>
-            </div>
-          </section>
-
-          <section className="article-section">
-            <h2 className="article-section-title">失敗を知ると改善ポイントが見える</h2>
+            <h2 className="article-section-title">まずは型を1つ身につける</h2>
             <div className="article-summary-box">
               <p>
-                小論文は、何となく書き続けるだけでは上達しにくい科目です。
-                だからこそ、典型的な失敗を先に知っておくと、
-                自分の答案を見直す視点が持てるようになります。
+                小論文は、才能よりも型の理解が大きい科目です。
+                いきなり上手な表現を目指す必要はありません。
               </p>
               <p>
-                書いたあとに「設問に答えているか」「結論が明確か」「理由は十分か」
-                「具体例はずれていないか」「最後まで締められているか」を確認するだけでも、
-                答案の質はかなり変わります。
+                まずは「結論 → 理由 → 具体例 → まとめ」という流れを覚え、
+                どのテーマでもその型で考える練習をすると、安定して書けるようになります。
               </p>
             </div>
           </section>
 
           <section className="article-section">
             <div className="article-highlight">
-              <strong>見直しのコツ：</strong>
-              書いた直後ではなく、少し時間を置いてから読むと、
-              設問ずれや論理の弱さに気づきやすくなります。
+              <strong>ポイント：</strong>
+              小論文が苦手な人ほど、まずは「何を書くか」ではなく
+              「どの順番で書くか」を意識すると整理しやすくなります。
             </div>
           </section>
         </div>
 
         <hr className="divider" />
 
-        <RelatedGuides currentHref="/guide/common-mistakes" />
+        <RelatedGuides currentHref="/guide/essay-structure" />
 
         <hr className="divider" />
 
