@@ -1,8 +1,26 @@
 import Link from "next/link";
 
 export default function HomePage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "小論設計室",
+    url: "https://shoron-rewarded-web.vercel.app",
+    description: "小論文を、AIと一緒に磨く添削サービス",
+    inLanguage: "ja",
+    publisher: {
+      "@type": "Person",
+      name: "佐藤 慶音",
+    },
+  };
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <div className="container">
         <section style={{ padding: "44px 0 20px" }}>
           <div

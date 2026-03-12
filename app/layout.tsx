@@ -3,8 +3,33 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "小論設計室",
+  metadataBase: new URL("https://shoron-rewarded-web.vercel.app"),
+  title: {
+    default: "小論設計室",
+    template: "%s | 小論設計室",
+  },
   description: "小論文を、AIと一緒に磨く添削サービス",
+  applicationName: "小論設計室",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: "https://shoron-rewarded-web.vercel.app",
+    siteName: "小論設計室",
+    title: "小論設計室",
+    description: "小論文を、AIと一緒に磨く添削サービス",
+    locale: "ja_JP",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "小論設計室",
+    description: "小論文を、AIと一緒に磨く添削サービス",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
