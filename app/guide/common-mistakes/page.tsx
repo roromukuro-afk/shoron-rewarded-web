@@ -1,9 +1,42 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import RelatedGuides from "../../components/RelatedGuides";
+import { buildGuideJsonLd, buildGuideMetadata } from "../../lib/guide-seo";
+
+const title = "小論文の基本構成とは？まず押さえたい4つの型";
+const description =
+  "小論文の基本構成である『結論・理由・具体例・まとめ』の4つの型を分かりやすく解説します。";
+const path = "/guide/essay-structure";
+const keywords = [
+  "小論文",
+  "小論文 書き方",
+  "小論文 基本構成",
+  "結論 理由 具体例 まとめ",
+  "小論文 型",
+];
+
+export const metadata: Metadata = buildGuideMetadata({
+  title,
+  description,
+  path,
+  keywords,
+});
 
 export default function EssayStructureGuidePage() {
+  const jsonLd = buildGuideJsonLd({
+    title,
+    description,
+    path,
+    keywords,
+  });
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <div className="article-shell">
         <section className="article-hero">
           <div className="article-hero-card">

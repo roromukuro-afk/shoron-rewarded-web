@@ -1,9 +1,42 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import RelatedGuides from "../../components/RelatedGuides";
+import { buildGuideJsonLd, buildGuideMetadata } from "../../lib/guide-seo";
+
+const title = "小論文でよく出るテーマ例｜まず押さえたい頻出分野";
+const description =
+  "小論文でよく出るテーマ例を整理し、教育・AI・環境・福祉・地域・多様性などの頻出分野を解説します。";
+const path = "/guide/common-themes";
+const keywords = [
+  "小論文",
+  "小論文 テーマ",
+  "小論文 頻出テーマ",
+  "小論文 教育 AI 環境",
+  "小論文 出題例",
+];
+
+export const metadata: Metadata = buildGuideMetadata({
+  title,
+  description,
+  path,
+  keywords,
+});
 
 export default function CommonThemesGuidePage() {
+  const jsonLd = buildGuideJsonLd({
+    title,
+    description,
+    path,
+    keywords,
+  });
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <div className="article-shell">
         <section className="article-hero">
           <div className="article-hero-card">
