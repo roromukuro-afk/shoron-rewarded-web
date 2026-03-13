@@ -54,7 +54,6 @@ export default function SubmitPage() {
 
       if (!res.ok) {
         setMsg(`❌ 送信失敗：${out?.detail ?? out?.error ?? res.status}`);
-        setSending(false);
         return;
       }
 
@@ -77,69 +76,54 @@ export default function SubmitPage() {
     <main>
       <div className="container">
         <section style={{ padding: "40px 0 12px" }}>
-          <div
-            style={{
-              display: "grid",
-              gap: 24,
-              gridTemplateColumns: "1.1fr 0.9fr",
-              alignItems: "start",
-            }}
-          >
+          <div className="hero-grid">
             <div>
               <div className="page-eyebrow">小論設計室｜無料診断</div>
               <h1 className="page-title">小論文を投稿する</h1>
               <p className="page-lead">
-                小論文を投稿すると、点数・要約・良い点・改善点を確認できます。
+                まずは無料診断として、点数・要約・改善点を確認できます。
               </p>
 
               <p style={{ marginTop: 12 }}>
-                まずは無料診断として現在の課題を把握し、必要に応じて学習ガイドや詳細添削につなげるのがおすすめです。
+                完璧な文章でなくても大丈夫です。まずは1本書いてみて、
+                どこを直せばよいかを確認するのがいちばん早いです。
               </p>
 
               <div className="card" style={{ marginTop: 20 }}>
                 <div style={{ display: "grid", gap: 18 }}>
-                  <label>
-                    <div style={{ fontWeight: 900, fontSize: 15 }}>設問</div>
+                  <label className="form-label">
+                    <div className="form-label-text">設問</div>
                     <textarea
                       value={question}
                       onChange={(e) => setQuestion(e.target.value)}
                       rows={4}
-                      style={{
-                        width: "100%",
-                        marginTop: 10,
-                        padding: 14,
-                        borderRadius: 12,
-                        border: "1px solid var(--line)",
-                        fontSize: 15,
-                        background: "#fff",
-                      }}
+                      className="form-textarea"
                     />
                   </label>
 
-                  <label>
-                    <div style={{ fontWeight: 900, fontSize: 15 }}>条件</div>
+                  <label className="form-label">
+                    <div className="form-label-text">条件</div>
                     <textarea
                       value={constraints}
                       onChange={(e) => setConstraints(e.target.value)}
                       rows={3}
-                      style={{
-                        width: "100%",
-                        marginTop: 10,
-                        padding: 14,
-                        borderRadius: 12,
-                        border: "1px solid var(--line)",
-                        fontSize: 15,
-                        background: "#fff",
-                      }}
+                      className="form-textarea"
                     />
                   </label>
 
-                  <label>
-                    <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-                      <span style={{ fontWeight: 900, fontSize: 15 }}>本文</span>
-                      <span className="muted" style={{ fontSize: 13 }}>
+                  <label className="form-label">
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        gap: 12,
+                        alignItems: "center",
+                      }}
+                    >
+                      <div className="form-label-text">本文</div>
+                      <div className="muted" style={{ fontSize: 13 }}>
                         {charCount}字
-                      </span>
+                      </div>
                     </div>
 
                     <textarea
@@ -147,20 +131,15 @@ export default function SubmitPage() {
                       onChange={(e) => setEssayText(e.target.value)}
                       rows={14}
                       placeholder="ここに小論文本文を入力してください。"
-                      style={{
-                        width: "100%",
-                        marginTop: 10,
-                        padding: 14,
-                        borderRadius: 12,
-                        border: "1px solid var(--line)",
-                        fontSize: 15,
-                        background: "#fff",
-                      }}
+                      className="form-textarea"
                     />
+                    <div className="form-help">
+                      まずは最後まで書き切ることを優先すると改善しやすいです。
+                    </div>
                   </label>
                 </div>
 
-                <div className="button-row" style={{ marginTop: 20 }}>
+                <div className="button-row">
                   <button
                     onClick={onSubmit}
                     disabled={sending}
@@ -179,39 +158,21 @@ export default function SubmitPage() {
                   </Link>
                 </div>
 
-                {msg && (
-                  <pre
-                    style={{
-                      marginTop: 16,
-                      whiteSpace: "pre-wrap",
-                      background: "#f9fafb",
-                      border: "1px solid var(--line)",
-                      borderRadius: 12,
-                      padding: 14,
-                    }}
-                  >
-                    {msg}
-                  </pre>
-                )}
+                {msg && <pre className="status-box">{msg}</pre>}
               </div>
             </div>
 
             <div>
-              <div
-                className="card"
-                style={{
-                  background: "linear-gradient(180deg, #ffffff 0%, #f8fbff 100%)",
-                }}
-              >
+              <div className="soft-panel">
                 <div style={{ fontSize: 13, color: "var(--muted)", fontWeight: 700 }}>
                   投稿の流れ
                 </div>
 
                 <div style={{ marginTop: 14, display: "grid", gap: 12 }}>
                   {[
-                    ["1", "本文を入力", "設問・条件・小論文本文を入力します。"],
-                    ["2", "無料診断を確認", "点数・要約・改善点をチェックします。"],
-                    ["3", "必要なら次へ進む", "学習ガイドや詳細添削につなげます。"],
+                    ["1", "本文を入力", "設問・条件・小論文本文を入れる"],
+                    ["2", "無料診断を確認", "点数・要約・改善点をチェックする"],
+                    ["3", "必要なら次へ進む", "学習ガイドや詳細添削につなげる"],
                   ].map(([num, title, desc]) => (
                     <div
                       key={num}
@@ -241,6 +202,7 @@ export default function SubmitPage() {
                       >
                         {num}
                       </div>
+
                       <div>
                         <div style={{ fontWeight: 900 }}>{title}</div>
                         <div style={{ marginTop: 4, fontSize: 14, color: "var(--muted)" }}>
@@ -251,32 +213,24 @@ export default function SubmitPage() {
                   ))}
                 </div>
 
-                <div
-                  style={{
-                    marginTop: 16,
-                    padding: 14,
-                    borderRadius: 14,
-                    background: "#111827",
-                    color: "#fff",
-                  }}
-                >
-                  <div style={{ fontSize: 13, opacity: 0.75 }}>ポイント</div>
-                  <div style={{ marginTop: 6, fontWeight: 800 }}>
-                    まずは完璧を目指すより、1本書いて改善点を確認するのがおすすめです。
+                <div className="dark-panel">
+                  <div className="dark-panel-title">投稿のコツ</div>
+                  <div className="dark-panel-body">
+                    まずは結論を決めて、理由を1〜2個に絞ると書きやすくなります。
                   </div>
                 </div>
               </div>
 
               <div className="card" style={{ marginTop: 16 }}>
-                <div style={{ fontWeight: 900, fontSize: 18 }}>入力前のコツ</div>
+                <div style={{ fontWeight: 900, fontSize: 18 }}>入力前のチェック</div>
                 <ul style={{ marginTop: 10, paddingLeft: 20 }}>
-                  <li>最初に自分の結論を決める</li>
-                  <li>理由は1〜2個に絞る</li>
-                  <li>短い具体例を入れる</li>
-                  <li>最後は一文で締める</li>
+                  <li>自分の立場が決まっているか</li>
+                  <li>理由が具体的になっているか</li>
+                  <li>最後を一文で締められそうか</li>
+                  <li>字数条件を大きく外れていないか</li>
                 </ul>
 
-                <div className="button-row" style={{ marginTop: 14 }}>
+                <div className="button-row">
                   <Link href="/guide/essay-structure" className="button-secondary">
                     基本構成を読む
                   </Link>

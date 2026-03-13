@@ -31,7 +31,6 @@ export default function LoginPage() {
 
       if (error) {
         setMsg(`❌ 送信失敗：${error.message}`);
-        setSending(false);
         return;
       }
 
@@ -47,47 +46,35 @@ export default function LoginPage() {
     <main>
       <div className="container">
         <section style={{ padding: "40px 0 12px" }}>
-          <div
-            style={{
-              display: "grid",
-              gap: 24,
-              gridTemplateColumns: "1.05fr 0.95fr",
-              alignItems: "start",
-            }}
-          >
+          <div className="hero-grid">
             <div>
               <div className="page-eyebrow">小論設計室｜ログイン</div>
               <h1 className="page-title">ログイン</h1>
               <p className="page-lead">
-                メールアドレスを入力すると、ログイン用リンクを送信します。
+                メールアドレスだけで、かんたんにログインできます。
               </p>
 
               <p style={{ marginTop: 12 }}>
-                ログインすると、投稿履歴、チケット残高、契約状況の確認や、
-                詳細添削の利用がしやすくなります。
+                ログインすると、投稿履歴、チケット残高、契約状況の確認がしやすくなります。
+                継続して使うならログインしておくのがおすすめです。
               </p>
 
               <div className="card" style={{ marginTop: 20 }}>
-                <label style={{ display: "block" }}>
-                  <div style={{ fontWeight: 900, fontSize: 15 }}>メールアドレス</div>
+                <label className="form-label">
+                  <div className="form-label-text">メールアドレス</div>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="example@gmail.com"
-                    style={{
-                      width: "100%",
-                      marginTop: 10,
-                      padding: 14,
-                      borderRadius: 12,
-                      border: "1px solid var(--line)",
-                      fontSize: 15,
-                      background: "#fff",
-                    }}
+                    className="form-input"
                   />
+                  <div className="form-help">
+                    入力したメールアドレス宛にログインリンクを送信します。
+                  </div>
                 </label>
 
-                <div className="button-row" style={{ marginTop: 18 }}>
+                <div className="button-row">
                   <button
                     onClick={sendMagicLink}
                     disabled={sending}
@@ -102,49 +89,23 @@ export default function LoginPage() {
                   </Link>
                 </div>
 
-                {msg && (
-                  <pre
-                    style={{
-                      marginTop: 16,
-                      whiteSpace: "pre-wrap",
-                      background: "#f9fafb",
-                      border: "1px solid var(--line)",
-                      borderRadius: 12,
-                      padding: 14,
-                    }}
-                  >
-                    {msg}
-                  </pre>
-                )}
+                {msg && <pre className="status-box">{msg}</pre>}
               </div>
             </div>
 
             <div>
-              <div
-                className="card"
-                style={{
-                  background: "linear-gradient(180deg, #ffffff 0%, #f8fbff 100%)",
-                }}
-              >
+              <div className="soft-panel">
                 <div style={{ fontSize: 13, color: "var(--muted)", fontWeight: 700 }}>
                   ログインするとできること
                 </div>
 
                 <div style={{ marginTop: 14, display: "grid", gap: 12 }}>
                   {[
-                    ["投稿履歴の確認", "これまでの小論文と結果をまとめて見返せます。"],
-                    ["チケット残高の確認", "無料・Proの残高や利用状況を確認できます。"],
-                    ["契約状況の確認", "料金プランや支払い状況の把握がしやすくなります。"],
+                    ["投稿履歴の確認", "過去に書いた小論文と結果を見返せます。"],
+                    ["チケット残高の確認", "Free / Pro の残高をまとめて確認できます。"],
+                    ["契約状況の確認", "料金プランや支払い状況を把握できます。"],
                   ].map(([title, desc]) => (
-                    <div
-                      key={title}
-                      style={{
-                        padding: 14,
-                        borderRadius: 14,
-                        border: "1px solid var(--line)",
-                        background: "#fff",
-                      }}
-                    >
+                    <div key={title} className="card">
                       <div style={{ fontWeight: 900 }}>{title}</div>
                       <div style={{ marginTop: 6, fontSize: 14, color: "var(--muted)" }}>
                         {desc}
@@ -153,18 +114,10 @@ export default function LoginPage() {
                   ))}
                 </div>
 
-                <div
-                  style={{
-                    marginTop: 16,
-                    padding: 14,
-                    borderRadius: 14,
-                    background: "#111827",
-                    color: "#fff",
-                  }}
-                >
-                  <div style={{ fontSize: 13, opacity: 0.75 }}>おすすめ</div>
-                  <div style={{ marginTop: 6, fontWeight: 800 }}>
-                    ログインしておくと、学習の継続と見直しがしやすくなります。
+                <div className="dark-panel">
+                  <div className="dark-panel-title">おすすめ</div>
+                  <div className="dark-panel-body">
+                    無料診断を何度か使うなら、ログインして履歴を残すのがおすすめです。
                   </div>
                 </div>
               </div>
@@ -173,10 +126,10 @@ export default function LoginPage() {
                 <div style={{ fontWeight: 900, fontSize: 18 }}>はじめて使う人へ</div>
                 <p style={{ marginTop: 10 }}>
                   まずはログインせずに無料診断を試すこともできます。
-                  続けて使いたいときは、あとからログインして履歴管理に切り替えるのがおすすめです。
+                  そのあとでログインして継続利用に切り替えても大丈夫です。
                 </p>
 
-                <div className="button-row" style={{ marginTop: 14 }}>
+                <div className="button-row">
                   <Link href="/submit" className="button-secondary">
                     先に無料診断を試す
                   </Link>

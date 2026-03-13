@@ -18,7 +18,6 @@ export default function BillingPage() {
 
       if (!token) {
         setMsg("❌ 先にログインしてください。");
-        setLoadingPlan(null);
         return;
       }
 
@@ -35,13 +34,13 @@ export default function BillingPage() {
 
       if (!res.ok) {
         setMsg(`❌ 失敗：${out?.detail ?? out?.error ?? res.status}`);
-        setLoadingPlan(null);
         return;
       }
 
       window.location.href = out.url;
     } catch (e: any) {
       setMsg(`❌ 通信エラー：${e?.message ?? "unknown"}`);
+    } finally {
       setLoadingPlan(null);
     }
   };
@@ -50,35 +49,27 @@ export default function BillingPage() {
     <main>
       <div className="container">
         <section style={{ padding: "40px 0 12px" }}>
-          <div
-            style={{
-              display: "grid",
-              gap: 24,
-              gridTemplateColumns: "1.1fr 0.9fr",
-              alignItems: "start",
-            }}
-          >
+          <div className="hero-grid">
             <div>
               <div className="page-eyebrow">小論設計室｜料金プラン</div>
               <h1 className="page-title">料金プラン</h1>
               <p className="page-lead">
-                無料診断から始めて、必要に応じて詳細添削や再確認につなげられます。
+                無料診断から始めて、必要なときだけ詳細添削に進めます。
               </p>
 
               <p style={{ marginTop: 12 }}>
-                小論設計室では、無料で使える機能に加えて、
-                より詳しい確認に使えるProチケット付きの有料プランを用意しています。
+                まずは無料診断で課題を確認し、
+                もっと詳しく見たいときにProチケット付きプランを使う形がおすすめです。
               </p>
 
               <div className="card" style={{ marginTop: 20 }}>
                 <div style={{ fontWeight: 900, fontSize: 18 }}>まずは無料で利用</div>
                 <p style={{ marginTop: 10 }}>
                   小論文を投稿して、点数・要約・改善点を確認できます。
-                  まずは無料診断で自分の課題を把握し、
-                  もっと深く見たいときに有料プランを使うのがおすすめです。
+                  最初から有料にする必要はありません。
                 </p>
 
-                <div className="button-row" style={{ marginTop: 16 }}>
+                <div className="button-row">
                   <Link href="/submit" className="button-primary">
                     無料診断を試す
                   </Link>
@@ -90,31 +81,18 @@ export default function BillingPage() {
             </div>
 
             <div>
-              <div
-                className="card"
-                style={{
-                  background: "linear-gradient(180deg, #ffffff 0%, #f8fbff 100%)",
-                }}
-              >
+              <div className="soft-panel">
                 <div style={{ fontSize: 13, color: "var(--muted)", fontWeight: 700 }}>
-                  プランの考え方
+                  選び方
                 </div>
 
                 <div style={{ marginTop: 14, display: "grid", gap: 12 }}>
                   {[
-                    ["無料診断", "まずは現在の課題を把握するための入口"],
+                    ["無料診断", "まずは今の答案の弱点を知りたい人向け"],
                     ["Basic", "少しずつ継続して改善したい人向け"],
-                    ["Plus", "頻繁に再確認しながら伸ばしたい人向け"],
+                    ["Plus", "頻繁に見直しながら伸ばしたい人向け"],
                   ].map(([title, desc]) => (
-                    <div
-                      key={title}
-                      style={{
-                        padding: 14,
-                        borderRadius: 14,
-                        border: "1px solid var(--line)",
-                        background: "#fff",
-                      }}
-                    >
+                    <div key={title} className="card">
                       <div style={{ fontWeight: 900 }}>{title}</div>
                       <div style={{ marginTop: 6, fontSize: 14, color: "var(--muted)" }}>
                         {desc}
@@ -123,18 +101,10 @@ export default function BillingPage() {
                   ))}
                 </div>
 
-                <div
-                  style={{
-                    marginTop: 16,
-                    padding: 14,
-                    borderRadius: 14,
-                    background: "#111827",
-                    color: "#fff",
-                  }}
-                >
-                  <div style={{ fontSize: 13, opacity: 0.75 }}>おすすめの始め方</div>
-                  <div style={{ marginTop: 6, fontWeight: 800 }}>
-                    無料診断 → 必要ならBasic → さらに継続するならPlus
+                <div className="dark-panel">
+                  <div className="dark-panel-title">おすすめの順番</div>
+                  <div className="dark-panel-body">
+                    無料診断 → Basic → 必要に応じて Plus
                   </div>
                 </div>
               </div>
@@ -147,32 +117,26 @@ export default function BillingPage() {
         <section className="section">
           <h2 style={{ fontSize: 26, fontWeight: 900 }}>プラン一覧</h2>
 
-          <div
-            className="card-grid"
-            style={{
-              marginTop: 18,
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            }}
-          >
+          <div className="info-grid-3" style={{ marginTop: 18 }}>
             <div className="card">
               <div style={{ fontWeight: 900, fontSize: 22 }}>Basic</div>
               <p style={{ marginTop: 10, fontSize: 18 }}>
                 月額 <b>500円</b>
               </p>
               <p style={{ marginTop: 8 }}>
-                毎月 <b>Pro +40</b> を付与します。
+                毎月 <b>Pro +40</b>
               </p>
-              <p style={{ marginTop: 10, color: "var(--muted)" }}>
-                継続的に少しずつ添削を受けたい方向けのプランです。
+              <p style={{ marginTop: 10 }} className="muted">
+                少しずつ継続して改善したい人向けです。
               </p>
 
               <ul style={{ marginTop: 14, paddingLeft: 20 }}>
-                <li>詳細確認のためのPro利用</li>
-                <li>月額を抑えて続けやすい</li>
-                <li>初めて有料化する人向け</li>
+                <li>費用を抑えて続けやすい</li>
+                <li>必要なときに詳しく確認できる</li>
+                <li>はじめての有料化向け</li>
               </ul>
 
-              <div className="button-row" style={{ marginTop: 18 }}>
+              <div className="button-row">
                 <button
                   onClick={() => go("basic")}
                   className="button-primary"
@@ -188,7 +152,7 @@ export default function BillingPage() {
               className="card"
               style={{
                 border: "1px solid #c7d2fe",
-                boxShadow: "0 14px 32px rgba(37, 99, 235, 0.08)",
+                boxShadow: "var(--shadow-strong)",
               }}
             >
               <div
@@ -211,19 +175,19 @@ export default function BillingPage() {
                 月額 <b>960円</b>
               </p>
               <p style={{ marginTop: 8 }}>
-                毎月 <b>Pro +100</b> を付与します。
+                毎月 <b>Pro +100</b>
               </p>
-              <p style={{ marginTop: 10, color: "var(--muted)" }}>
-                頻繁に再採点や練習を進めたい方向けのプランです。
+              <p style={{ marginTop: 10 }} className="muted">
+                頻繁に再確認しながら伸ばしたい人向けです。
               </p>
 
               <ul style={{ marginTop: 14, paddingLeft: 20 }}>
                 <li>たくさん書いて改善したい人向け</li>
-                <li>再確認を繰り返しやすい</li>
+                <li>見直し回数を増やしやすい</li>
                 <li>継続学習との相性が良い</li>
               </ul>
 
-              <div className="button-row" style={{ marginTop: 18 }}>
+              <div className="button-row">
                 <button
                   onClick={() => go("plus")}
                   className="button-primary"
@@ -241,7 +205,6 @@ export default function BillingPage() {
 
         <section className="section">
           <h2 style={{ fontSize: 26, fontWeight: 900 }}>注意事項</h2>
-
           <div className="card" style={{ marginTop: 18 }}>
             <ul style={{ margin: 0, paddingLeft: 20 }}>
               <li>料金は税込表示です。</li>
@@ -252,21 +215,7 @@ export default function BillingPage() {
           </div>
         </section>
 
-        {msg && (
-          <>
-            <hr className="divider" />
-            <section className="section">
-              <div
-                className="card"
-                style={{
-                  background: "#f9fafb",
-                }}
-              >
-                <pre style={{ margin: 0, whiteSpace: "pre-wrap" }}>{msg}</pre>
-              </div>
-            </section>
-          </>
-        )}
+        {msg && <pre className="status-box">{msg}</pre>}
 
         <hr className="divider" />
 
