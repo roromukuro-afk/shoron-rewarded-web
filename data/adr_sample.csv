@@ -1,0 +1,18 @@
+symbol,name,exchange,sector
+BABA,Alibaba Group ADR,NYSE,Consumer Discretionary
+JD,JD.com ADR,NASDAQ,Consumer Discretionary
+PDD,PDD Holdings ADR,NASDAQ,Consumer Discretionary
+BIDU,Baidu ADR,NASDAQ,Technology
+TSM,Taiwan Semiconductor ADR,NYSE,Technology
+ASML,ASML Holding ADR,NASDAQ,Technology
+SAP,SAP SE ADR,NYSE,Technology
+SONY,Sony Group ADR,NYSE,Consumer Discretionary
+TM,Toyota Motor ADR,NYSE,Consumer Discretionary
+HMC,Honda Motor ADR,NYSE,Consumer Discretionary
+MUFG,Mitsubishi UFJ ADR,NYSE,Financials
+KB,KB Financial ADR,NYSE,Financials
+VALE,Vale SA ADR,NYSE,Materials
+PBR,Petrobras ADR,NYSE,Energy
+GOLD,Barrick Gold,NYSE,Materials
+RIO,Rio Tinto ADR,NYSE,Materials
+BHP,BHP Group ADR,NYSE,Materials

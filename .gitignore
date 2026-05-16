@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Screener backend
+backend/__pycache__/
+backend/screener.db
+backend/*.pyc

@@ -1,0 +1,41 @@
+symbol,name,exchange,sector
+NVDA,NVIDIA Corp,NASDAQ,Technology
+AMD,Advanced Micro Devices,NASDAQ,Technology
+SMCI,Super Micro Computer,NASDAQ,Technology
+PLTR,Palantir Technologies,NYSE,Technology
+AI,C3.ai Inc,NYSE,Technology
+SOUN,SoundHound AI,NASDAQ,Technology
+BBAI,BigBear.ai Holdings,NYSE,Technology
+IONQ,IonQ Inc,NYSE,Technology
+RGTI,Rigetti Computing,NASDAQ,Technology
+QUBT,Quantum Computing Inc,NASDAQ,Technology
+RCAT,Red Cat Holdings,NASDAQ,Technology
+JOBY,Joby Aviation,NYSE,Industrials
+ACHR,Archer Aviation,NYSE,Industrials
+LUNR,Intuitive Machines,NASDAQ,Technology
+RKLB,Rocket Lab USA,NASDAQ,Technology
+ASTS,AST SpaceMobile,NASDAQ,Technology
+GSAT,Globalstar Inc,NYSE,Technology
+FCEL,FuelCell Energy,NASDAQ,Energy
+PLUG,Plug Power,NASDAQ,Energy
+BE,Bloom Energy,NYSE,Energy
+NOVA,Sunnova Energy,NYSE,Energy
+GME,GameStop Corp,NYSE,Consumer Discretionary
+AMC,AMC Entertainment,NYSE,Communication Services
+BB,BlackBerry Ltd,NYSE,Technology
+TLRY,Tilray Brands,NASDAQ,Consumer Staples
+SNDL,SNDL Inc,NASDAQ,Consumer Staples
+ACB,Aurora Cannabis,NASDAQ,Health Care
+NIO,NIO Inc,NYSE,Consumer Discretionary
+XPEV,XPeng Inc,NYSE,Consumer Discretionary
+LI,Li Auto Inc,NASDAQ,Consumer Discretionary
+RIVN,Rivian Automotive,NASDAQ,Consumer Discretionary
+LCID,Lucid Group,NASDAQ,Consumer Discretionary
+GOEV,Canoo Inc,NASDAQ,Consumer Discretionary
+NKLA,Nikola Corp,NASDAQ,Industrials
+WOLF,Wolfspeed Inc,NYSE,Technology
+ON,ON Semiconductor,NASDAQ,Technology
+MU,Micron Technology,NASDAQ,Technology
+INTC,Intel Corp,NASDAQ,Technology
+MRVL,Marvell Technology,NASDAQ,Technology
+ARM,ARM Holdings,NASDAQ,Technology
