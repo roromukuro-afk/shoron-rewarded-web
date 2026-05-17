@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 const navItems = [
   { href: "/screener", label: "ダッシュボード" },
   { href: "/screener/screening", label: "全銘柄スクリーニング" },
-  { href: "/screener/rankings", label: "候補ランキング" },
+  { href: "/screener/ranking", label: "候補ランキング" },
   { href: "/screener/excluded", label: "除外銘柄" },
   { href: "/screener/exclusion-list", label: "除外リスト管理" },
   { href: "/screener/aar", label: "AAR出力" },
   { href: "/screener/backtest", label: "バックテスト" },
+  { href: "/screener/settings", label: "設定" },
+  { href: "/screener/deploy-status", label: "稼働状況" },
 ];
 
 export default function ScreenerLayout({ children }: { children: React.ReactNode }) {

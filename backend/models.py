@@ -195,3 +195,28 @@ class AARRecord(Base):
     failure_reason = Column(Text)
     ai_comment = Column(Text)
     created_at = Column(DateTime, server_default=func.now())
+
+
+class AppSetting(Base):
+    __tablename__ = "app_settings"
+    id = Column(Integer, primary_key=True, index=True)
+    key = Column(String, unique=True, index=True)
+    value = Column(Text)
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class ScreeningJob(Base):
+    __tablename__ = "screening_jobs"
+    id = Column(Integer, primary_key=True, index=True)
+    status = Column(String)  # queued / running / completed / failed
+    market_scope = Column(String)
+    mode = Column(String)
+    total_count = Column(Integer, default=0)
+    processed_count = Column(Integer, default=0)
+    adopted_count = Column(Integer, default=0)
+    conditional_count = Column(Integer, default=0)
+    watch_count = Column(Integer, default=0)
+    excluded_count = Column(Integer, default=0)
+    error_message = Column(Text)
+    started_at = Column(DateTime, server_default=func.now())
+    finished_at = Column(DateTime)
